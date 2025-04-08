@@ -77,10 +77,11 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="BattleGPU.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackDex.cpp" />
+    <ClCompile Include="BattleCPU.cpp" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="PokeDex.cpp" />
@@ -89,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackDex.h" />
+    <ClInclude Include="common.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="PokeDex.h" />
     <ClInclude Include="Pokemon.h" />
