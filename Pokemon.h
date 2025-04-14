@@ -12,12 +12,12 @@
  */
 class Pokemon {
 private:
-    std::string name;
+    std::string Pokename;
 
-    int healthPoints, attack, defense, specialAttack, specialDefense, speed, accuracy, evasion;
+    int healthPoints, attack, defense, specialAttack, specialDefense, speed, pokeacc, evasion;
 
-    Types type1;
-    Types type2;
+    TYPES type1;
+    TYPES type2;
 
     std::array<Move*, 4> moves;
 
@@ -26,8 +26,8 @@ private:
     std::array<double, 2> statAcc, statEva;
 
 public:
-    Pokemon(std::string monster, int hp, int atk, int def, int spa, int spd, int spe, Types typeA, Types typeB);
-    std::string getName();
+    Pokemon(std::string monster, int hp, int atk, int def, int spa, int spd, int spe, TYPES typeA, TYPES typeB);
+    std::string getPokeName();
     int getHP();
     int getAtk();
     int getAtkStage();
@@ -39,16 +39,16 @@ public:
     int getSpdStage();
     int getSpe();
     int getSpeStage();
-    Types getTypeA();
-    Types getTypeB();
-    Move getMove1();
-    Move getMove2();
-    Move getMove3();
-    Move getMove4();
-    Move getMove(int x);
+    TYPES getTypeA();
+    TYPES getTypeB();
+    Move* getMove1();
+    Move* getMove2();
+    Move* getMove3();
+    Move* getMove4();
+    Move* getMove(int x);
     int getMovesNum();
-    int getAcc();
-    int getAccStage();
+    int getPokeAcc();
+    double getPokeAccStage();
     int getEva();
 
 

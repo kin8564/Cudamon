@@ -8,15 +8,15 @@
 class Move {
     private:
         std::string name;
-        Types type;
+        TYPES type;
         int category;
         int power, accuracy, pp;
         std::array<int, 8> statEffect; // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
 
     public:
-        Move (std::string name, Types type, int cat, int pw, int acc, int points, std::array<int, 8> statArray);
+        Move(std::string name, TYPES type, int cat, int pw, int acc, int points, std::array<int, 8> statArray);
         std::string getName();
-        Types getType();
+        TYPES getType();
         int getCat();
         int getPow();
         int getAcc();

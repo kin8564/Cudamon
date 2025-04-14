@@ -11,6 +11,7 @@ class AttackDex{
         std::unordered_map<std::string, Move*> attackdex;
 
         void populate();
+        void cleanattack();
 
 };
 

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-enum class Types {
+enum class TYPES {
     FIRE, WATER, GRASS, ELECTRIC, ICE, FIGHTING,
     POISON, GROUND, FLYING, PSYCHIC, BUG, ROCK,
     GHOST, DARK, DRAGON, STEEL, FAIRY, NORMAL, NONE

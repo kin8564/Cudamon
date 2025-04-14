@@ -12,7 +12,8 @@ class PokeDex{
     public:
         std::array<Pokemon*, 151> pokedex;
 
-        void populate();
+        void dexpopulate();
+        void cleandex();
 
 };
 
