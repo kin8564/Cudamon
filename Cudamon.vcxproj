@@ -84,6 +84,7 @@
     <ClCompile Include="BattleCPU.cpp" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Move.cpp" />
+    <ClCompile Include="Natures.cpp" />
     <ClCompile Include="PokeDex.cpp" />
     <ClCompile Include="Pokemon.cpp" />
     <ClCompile Include="Types.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="AttackDex.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Move.h" />
+    <ClInclude Include="Natures.h" />
     <ClInclude Include="PokeDex.h" />
     <ClInclude Include="Pokemon.h" />
     <ClInclude Include="Types.h" />

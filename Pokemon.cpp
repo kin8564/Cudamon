@@ -4,6 +4,7 @@
 #include "pokemon.h"
 #include "Types.h"
 #include "Move.h"
+#include "Natures.h"
 
 char Pokename[30];
 
@@ -11,6 +12,8 @@ int healthPoints, attack, defense, specialAttack, specialDefense, speed, pokeacc
 
 TYPES type1;
 TYPES type2;
+
+NATURES weirdo;
 
 Move moves[4];
 
@@ -36,6 +39,87 @@ statAcc{0, 1.0}, statEva{0, 1.0}{
 }
 
 Pokemon::Pokemon(){}
+
+//TODO
+void setNature(NATURES nature) {
+    switch (nature) {
+    case NATURES::HARDY:
+
+        break;
+    case NATURES::LONELY:
+
+        break;
+    case NATURES::BRAVE:
+
+        break;
+    case NATURES::ADAMANT:
+
+        break;
+    case NATURES::NAUGHTY:
+
+        break;
+    case NATURES::BOLD:
+
+        break;
+    case NATURES::DOCILE:
+
+        break;
+    case NATURES::RELAXED:
+
+        break;
+    case NATURES::IMPISH:
+
+        break;
+    case NATURES::LAX:
+
+        break;
+    case NATURES::TIMID:
+
+        break;
+    case NATURES::HASTY:
+
+        break;
+    case NATURES::SERIOUS:
+
+        break;
+    case NATURES::JOLLY:
+
+        break;
+    case NATURES::NAIVE:
+
+        break;
+    case NATURES::MODEST:
+
+        break;
+    case NATURES::MILD:
+
+        break;
+    case NATURES::QUIET:
+
+        break;
+    case NATURES::BASHFUL:
+
+        break;
+    case NATURES::RASH:
+
+        break;
+    case NATURES::CALM:
+
+        break;
+    case NATURES::GENTLE:
+
+        break;
+    case NATURES::SASSY:
+
+        break;
+    case NATURES::CAREFUL:
+
+        break;
+    case NATURES::QUIRKY:
+
+        break;
+    }
+}
 
 char* Pokemon::getPokeName() {
     return Pokename;
