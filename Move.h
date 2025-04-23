@@ -5,23 +5,22 @@
 #include <array>
 #include "Types.h"  // Include Types enum class
 
-class Move {
-    private:
-        std::string name;
+struct Move {
+        char name[30];
         TYPES type;
         int category;
         int power, accuracy, pp;
-        std::array<int, 8> statEffect; // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
+        int statEffect[8]; // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
 
-    public:
-        Move(std::string name, TYPES type, int cat, int pw, int acc, int points, std::array<int, 8> statArray);
-        std::string getName();
+        Move(const char* name, TYPES type, int cat, int pw, int acc, int points, int statArray[8]);
+        Move();
+        char* getName();
         TYPES getType();
         int getCat();
         int getPow();
         int getAcc();
         int getPP();
-        std::array<int, 8> getEff();
+        int* getEff();
 };
 
 #endif // MOVE_H

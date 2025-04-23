@@ -10,10 +10,10 @@
 
 class PokeDex{
     public:
-        std::array<Pokemon*, 151> pokedex;
+        PokeDex();
+        Pokemon pokedex[151];
 
         void dexpopulate();
-        void cleandex();
 
 };
 

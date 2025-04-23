@@ -10,24 +10,29 @@
 /**
  * Parent class for all Pokemon
  */
-class Pokemon {
-private:
-    std::string Pokename;
+struct Pokemon {
+    char Pokename[30];
 
     int healthPoints, attack, defense, specialAttack, specialDefense, speed, pokeacc, evasion;
 
     TYPES type1;
     TYPES type2;
 
-    std::array<Move*, 4> moves;
+    Move moves[4];
 
-    std::array<int, 2> statAtk, statDef, statSpa, statSpd, statSpe;
+    int statAtk[2];  // {stage, actual}
+    int statDef[2];
+    int statSpa[2];
+    int statSpd[2];
+    int statSpe[2];
 
-    std::array<double, 2> statAcc, statEva;
+    double statAcc[2];  // {stage, multiplier}
+    double statEva[2];
 
 public:
-    Pokemon(std::string monster, int hp, int atk, int def, int spa, int spd, int spe, TYPES typeA, TYPES typeB);
-    std::string getPokeName();
+    Pokemon();
+    Pokemon(const char* Pokename, int hp, int atk, int def, int spa, int spd, int spe, TYPES typeA, TYPES typeB);
+    char* getPokeName();
     int getHP();
     int getAtk();
     int getAtkStage();
@@ -41,11 +46,11 @@ public:
     int getSpeStage();
     TYPES getTypeA();
     TYPES getTypeB();
-    Move* getMove1();
-    Move* getMove2();
-    Move* getMove3();
-    Move* getMove4();
-    Move* getMove(int x);
+    Move getMove1();
+    Move getMove2();
+    Move getMove3();
+    Move getMove4();
+    Move getMove(int x);
     int getMovesNum();
     int getPokeAcc();
     double getPokeAccStage();
@@ -63,10 +68,10 @@ public:
     void setSpdStage(int x);
     void setSpe(int x);
     void setSpeStage(int x);
-    void setMove1(Move* move);
-    void setMove2(Move* move);
-    void setMove3(Move* move);
-    void setMove4(Move* move);
+    void setMove1(Move move);
+    void setMove2(Move move);
+    void setMove3(Move move);
+    void setMove4(Move move);
     void setAcc(int x);
     void incAcc(int x);
     void decAcc(int x);

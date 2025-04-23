@@ -1,18 +1,30 @@
 #include <string>
 #include <array>
+#include <cstring>
 #include "Types.h"
 #include "Move.h"
 
-std::string name;
+char name[30];
 TYPES type;
 int category;
 int power, accuracy, pp;
-std::array<int, 8> statEffect; // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
+int statEffect[8]; // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
 
-Move::Move(std::string name, TYPES type, int cat, int pw, int acc, int points, std::array<int, 8> statArray)
-        : name(name), type(type), category(cat), power(pw), accuracy(acc), pp(points), statEffect(statArray) {}
+Move::Move(const char* n, TYPES type, int cat, int pw, int acc, int points, int statArray[8])
+        : type(type), category(cat), power(pw), accuracy(acc), pp(points) {
+        strncpy(name, n, sizeof(name));
+        name[sizeof(name) - 1] = '\0'; // Null-terminate just in case
+        for (int j = 0; j < 8; ++j) statEffect[j] = statArray[j];
+        }
 
-std::string Move::getName() {
+Move::Move() : type(TYPES::NONE), category(0), power(0), accuracy(0), pp(0) {
+    name[0] = '\0'; // empty string
+    for (int j = 0; j < 8; ++j) {
+        statEffect[j] = 0;
+    }
+}
+
+char* Move::getName() {
     return name;
 }
 
@@ -36,6 +48,6 @@ int Move::getPP() {
     return pp;
 }
 
-std::array<int, 8> Move::getEff() {
+int* Move::getEff() {
     return statEffect;
 }

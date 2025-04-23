@@ -1,29 +1,43 @@
 #include <string>
 #include <array>
+#include <cstring>
 #include "pokemon.h"
 #include "Types.h"
 #include "Move.h"
 
-std::string Pokename;
+char Pokename[30];
 
 int healthPoints, attack, defense, specialAttack, specialDefense, speed, pokeacc, evasion;
 
 TYPES type1;
 TYPES type2;
 
-std::array<Move*, 4> moves;
+Move moves[4];
 
-std::array<int, 2> statAtk, statDef, statSpa, statSpd, statSpe;
+int statAtk[2];  // {stage, actual}
+int statDef[2];
+int statSpa[2];
+int statSpd[2];
+int statSpe[2];
 
-std::array<double, 2> statAcc, statEva;
+double statAcc[2];  // {stage, multiplier}
+double statEva[2];
 
-Pokemon::Pokemon(std::string monster, int hp, int atk, int def, int spa, int spd, int spe, TYPES typeA, TYPES typeB)
-: Pokename(monster), healthPoints(hp), attack(atk), defense(def), specialAttack(spa), specialDefense(spd), speed(spe),
-type1(typeA), type2(typeB), pokeacc(0), evasion(0),
-statAtk{0, attack}, statDef{0, defense}, statSpa{0, specialAttack}, statSpd{0, specialDefense}, statSpe{0, speed},
-statAcc{0, 1.0}, statEva{0, 1.0} {moves.fill(nullptr);}
+Pokemon::Pokemon(const char* monster, int hp, int atk, int def, int spa, int spd, int spe, TYPES typeA, TYPES typeB)
+: healthPoints(hp), attack(atk), defense(def), specialAttack(spa), specialDefense(spd), speed(spe),
+type1(typeA), type2(typeB), pokeacc(0), evasion(0),statAtk{0, attack}, statDef{0, defense}, statSpa{0, specialAttack}, statSpd{0, specialDefense}, statSpe{0, speed},
+statAcc{0, 1.0}, statEva{0, 1.0}{
+    strncpy(Pokename, monster, sizeof(Pokename));
+    Pokename[sizeof(Pokename) - 1] = '\0'; // Null-terminate just in case
 
-std::string Pokemon::getPokeName() {
+    for (int i = 0; i < 4; ++i) {
+        moves[i] = Move();
+    }
+}
+
+Pokemon::Pokemon(){}
+
+char* Pokemon::getPokeName() {
     return Pokename;
 }
 
@@ -148,43 +162,43 @@ TYPES Pokemon::getTypeB(){
     return type2;
 }
 
-Move* Pokemon::getMove1(){
+Move Pokemon::getMove1(){
     return moves[0];
 }
 
-Move* Pokemon::getMove2(){
+Move Pokemon::getMove2(){
     return moves[1];
 }
 
-Move* Pokemon::getMove3(){
+Move Pokemon::getMove3(){
     return moves[2];
 }
 
-Move* Pokemon::getMove4(){
+Move Pokemon::getMove4(){
     return moves[3];
 }
 
-Move* Pokemon::getMove(int x){
+Move Pokemon::getMove(int x){
     return moves[x];
 }
 
 int Pokemon::getMovesNum(){
-    return moves.size();
+    return sizeof(moves) / sizeof(moves[0]);
 }
 
-void Pokemon::setMove1(Move* move){
+void Pokemon::setMove1(Move move){
     moves[0] = move;
 }
 
-void Pokemon::setMove2(Move* move){
+void Pokemon::setMove2(Move move){
     moves[1] = move;
 }
 
-void Pokemon::setMove3(Move* move){
+void Pokemon::setMove3(Move move){
     moves[2] = move;
 }
 
-void Pokemon::setMove4(Move* move){
+void Pokemon::setMove4(Move move){
     moves[3] = move;
 }
 

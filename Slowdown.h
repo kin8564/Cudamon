@@ -10,10 +10,10 @@ class Slowdown {
     public:
         static void main();
         static void multiPopulate();
-        static void damageCalc (Pokemon* attacker, Pokemon* defender, Move* move);
-        static std::vector<int> typeMultiplier(int damage, Move* move, Pokemon* defender);
-        static void statusCalc(Pokemon* attacker, Pokemon* defender, Move* move);
-        static Pokemon battle(Pokemon* friend_pokemon, Pokemon* foe);
+        static void damageCalc (Pokemon& attacker, Pokemon& defender, Move move);
+        static std::vector<int> typeMultiplier(int damage, Move move, Pokemon& defender);
+        static void statusCalc(Pokemon& attacker, Pokemon& defender, Move move);
+        static Pokemon battle(Pokemon& friend_pokemon, Pokemon& foe);
 };
 
 #endif
