@@ -6,6 +6,7 @@
 #include <string>
 #include "Move.h"
 
+// change
 class AttackDex{
     public:
         std::unordered_map<std::string, Move*> attackdex;
