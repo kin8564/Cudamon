@@ -56,7 +56,7 @@ public:
     double getPokeAccStage();
     int getEva();
 
-
+	void setNature(NATURES nature);
     void setHP(int x);
     void setAtk(int x);
     void setAtkStage(int x);
