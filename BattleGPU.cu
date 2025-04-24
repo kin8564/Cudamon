@@ -8,6 +8,7 @@
 #endif
 
 const int TILE_SIZE = 16;
+const int NUM_POKEMON = 2;
 // GPU-compatible random number generation
 int getRandom(int seed, int offset) {
     curandState state;
@@ -68,7 +69,12 @@ Pokemon battleGPU(Pokemon& pokemon1, Pokemon& pokemon2, int seed) {
         }
     }
 
-    return (pokemon2.getHP() < 1) ? pokemon1 : pokemon2;
+    if (pokemon2.getHP() < 1) {
+        return pokemon1;
+    }
+    else {
+        return pokemon2;
+    }
 }
 
 // Kernel to simulate many battles
@@ -79,12 +85,12 @@ __global__ void battleKernel(Pokemon* p1Array, Pokemon* p2Array, Pokemon* result
     }
 }
 
-bool pokeBattleGPU(Pokemon& pokemon1, Pokemon& pokemon2) {
-    Pokemon* d_p1, * d_p2;
+bool pokeBattleGPU(Pokemon* pokemon1, Pokemon* pokemon2) {
+    Pokemon* d_p1, *d_p2;
 
     // Allocate memory on the device
-    cudaMalloc((void**)&d_p1, sizeof(Pokemon));
-    cudaMalloc((void**)&d_p2, sizeof(Pokemon));
+    cudaMalloc((void**)&d_p1, sizeof(Pokemon) * NUM_POKEMON);
+    cudaMalloc((void**)&d_p2, sizeof(Pokemon) * NUM_POKEMON);
 
     // Copy input Pokémon from host to device
     cudaMemcpy(d_p1, &pokemon1, sizeof(Pokemon), cudaMemcpyHostToDevice);
