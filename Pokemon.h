@@ -2,7 +2,7 @@
 #define POKEMON_H
 #include "Types.h"
 #include "Move.h"
-
+#include "Natures.h"
 #include <string>
 #include <array>
 
@@ -17,6 +17,8 @@ struct Pokemon {
 
     TYPES type1;
     TYPES type2;
+
+    NATURES weirdo;
 
     Move moves[4];
 
