@@ -49,6 +49,7 @@ int main() {
 	// All Squirtle
 	for (int i = 0; i < team_size; i++) {
 		team2[i] = pokedex.pokedex[7];
+		//3 columns by moveset, 25 natures
 	}
 
 	Pokemon Charmander = pokedex.pokedex[4];
@@ -59,7 +60,8 @@ int main() {
 
 	// Run battles in series
 	for (int i = 0; i < ITERS; i++) {
-		pokeBattleCPU(Charmander, Squirtle, resultsCPU[i]);
+		Pokemon victor;
+		pokeBattleCPU(&Charmander, &Squirtle, &victor);
 	}
 
 	// Display results

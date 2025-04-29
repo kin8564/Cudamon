@@ -16,23 +16,17 @@
  * Computes the CPU Pokemon battle algorithm
  * pokemon1 - Input array of pokemon1 stats
  * pokemon2 - Input array of pokemon2 stats
- * winner - Output array of winning pokemon
- * loser - Output array of losing pokemon
- * battleResult - Output array of battle results
- * numBattles - Number of battles to run
+ * winner - Output of winning pokemon
  */
-void pokeBattleCPU( int* pokemon1, int* pokemon2, int* winner, int* loser, int* battleResult );
+void pokeBattleCPU( Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* winner );
 
 /**
  * SUBJECT TO CHANGE
  * Computes the GPU Pokemon battle algorithm
  * pokemon1 - Input array of pokemon1 stats
  * pokemon2 - Input array of pokemon2 stats
- * winner - Output array of winning pokemon
- * loser - Output array of losing pokemon
- * battleResult - Output array of battle results
- * numBattles - Number of battles to run
+ * winner - Output of winning pokemon
  */
-bool pokeBattleGPU( int* pokemon1, int* pokemon2, int* winner, int* loser, int* battleResult );
+bool pokeBattleGPU( Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* winner );
 
 #endif

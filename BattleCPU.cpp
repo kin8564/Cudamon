@@ -37,13 +37,13 @@ static const std::unordered_map<int, double> accMultiplier = {
     {6,  9.0 / 3.0}
 };
 
-static const std::unordered_map<int, double> evaMultiplier = {
-    {6,  3.0 / 9.0}, {5,  3.0 / 8.0}, {4,  3.0 / 7.0},
-    {3,  3.0 / 6.0}, {2,  3.0 / 5.0}, {1,  3.0 / 4.0},
-    {0,  3.0 / 3.0}, {-1, 4.0 / 3.0}, {-2, 5.0 / 3.0},
-    {-3, 6.0 / 3.0}, {-4, 7.0 / 3.0}, {-5, 8.0 / 3.0},
-    {-6, 9.0 / 3.0}
-};
+//static const std::unordered_map<int, double> evaMultiplier = {
+//    {6,  3.0 / 9.0}, {5,  3.0 / 8.0}, {4,  3.0 / 7.0},
+//    {3,  3.0 / 6.0}, {2,  3.0 / 5.0}, {1,  3.0 / 4.0},
+//    {0,  3.0 / 3.0}, {-1, 4.0 / 3.0}, {-2, 5.0 / 3.0},
+//    {-3, 6.0 / 3.0}, {-4, 7.0 / 3.0}, {-5, 8.0 / 3.0},
+//    {-6, 9.0 / 3.0}
+//};
 
 static std::vector<int> typeMultiplier(int damage, Move move, Pokemon defender) {
     double modifier = 1.0;
@@ -546,55 +546,61 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
     double force = 0;
     double object = 0;
 
-    // Physical or special attack calculation
-    if (move.getCat() == 1) {
-        force = attacker.getAtk();
-        object = defender.getDef();
-    }
-    else if (move.getCat() == 2) {
-        force = attacker.getSpa();
-        object = defender.getSpd();
-    }
+    // Determine if the move hits its target
+    if (!targetHit) {
+        std::cout << "The attack missed!" << std::endl;
+    } else {
 
-    // Critical hit calculation
-    critCalc = std::rand() % 256;
-    if (critCalc < (attacker.getSpe() / 2)) {
-        critCalc = 1.5;
-        std::cout << "It's a critical hit!" << std::endl;
-    }
-    else {
-        critCalc = 1.0;
-    }
+        // Physical or special attack calculation
+        if (move.getCat() == 1) {
+            force = attacker.getAtk();
+            object = defender.getDef();
+        }
+        else if (move.getCat() == 2) {
+            force = attacker.getSpa();
+            object = defender.getSpd();
+        }
 
-    // Random factor calculation
-    randFact = (std::rand() % 16 + 85) / 100.0;
+        // Critical hit calculation
+        critCalc = std::rand() % 256;
+        if (critCalc < (attacker.getSpe() / 2)) {
+            critCalc = 1.5;
+            std::cout << "It's a critical hit!" << std::endl;
+        }
+        else {
+            critCalc = 1.0;
+        }
 
-    // Same Type Attack Bonus (STAB)
-    if (move.getType() == attacker.getTypeA() || move.getType() == attacker.getTypeB()) {
-        stab = 1.5;
+        // Random factor calculation
+        randFact = (std::rand() % 16 + 85) / 100.0;
+
+        // Same Type Attack Bonus (STAB)
+        if (move.getType() == attacker.getTypeA() || move.getType() == attacker.getTypeB()) {
+            stab = 1.5;
+        }
+
+        // Base damage calculation
+        int baseDamage = static_cast<int>((((22) * move.getPow() * (force / object)) / (50.0 + 2)) * critCalc * randFact * stab);
+
+        // Get type multiplier
+        std::vector<int> dmgArray = typeMultiplier(baseDamage, move, defender);
+        baseDamage = dmgArray[0];
+
+        // Determine effectiveness
+        if (dmgArray[1] == 1) {
+            std::cout << "It's super effective!" << std::endl;
+        }
+        else if (dmgArray[2] == 1) {
+            std::cout << "It's not very effective..." << std::endl;
+        }
+        else if (dmgArray[3] == 1) {
+            std::cout << "It doesn't affect " << defender.getPokeName() << "..." << std::endl;
+        }
+
+        // Apply damage to defender's HP
+        defender.setHP(defender.getHP() - baseDamage);
+        std::cout << baseDamage << " damage!" << std::endl;
     }
-
-    // Base damage calculation
-    int baseDamage = static_cast<int>((((22) * move.getPow() * (force / object)) / (50.0 + 2)) * critCalc * randFact * stab);
-
-    // Get type multiplier
-    std::vector<int> dmgArray = typeMultiplier(baseDamage, move, defender);
-    baseDamage = dmgArray[0];
-
-    // Determine effectiveness
-    if (dmgArray[1] == 1) {
-        std::cout << "It's super effective!" << std::endl;
-    }
-    else if (dmgArray[2] == 1) {
-        std::cout << "It's not very effective..." << std::endl;
-    }
-    else if (dmgArray[3] == 1) {
-        std::cout << "It doesn't affect " << defender.getPokeName() << "..." << std::endl;
-    }
-
-    // Apply damage to defender's HP
-    defender.setHP(defender.getHP() - baseDamage);
-    std::cout << baseDamage << " damage!" << std::endl;
 }
 
 void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
@@ -650,9 +656,21 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             std::cout << attacker.getPokeName() << "'s speed rose!" << std::endl;
         }
         if (effect[6] != 0) { // Buff accuracy
+			multStage = effect[6];
+			attacker.setAccStage(multStage);
+			/*multStage = attacker.getAccStage();
+			mult = accMultiplier[multStage];
+			int newAcc = static_cast<int>(mult * attacker.getAcc());
+			attacker.setAcc(newAcc);*/
             std::cout << attacker.getPokeName() << "'s accuracy rose!" << std::endl;
         }
         if (effect[7] != 0) { // Buff evasion
+			multStage = effect[7];
+			attacker.setEvaStage(multStage);
+			/*multStage = attacker.getEvaStage();
+			mult = evaMultiplier[multStage];
+			int newEva = static_cast<int>(mult * attacker.getEva());
+			attacker.setEva(newEva);*/
             std::cout << attacker.getPokeName() << "'s evasion rose!" << std::endl;
         }
     }
@@ -703,11 +721,40 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             std::cout << defender.getPokeName() << "'s speed fell!" << std::endl;
         }
         if (effect[6] != 0) { // Debuff accuracy
+			multStage = effect[6];
+			defender.setAccStage(multStage);
+			/*multStage = defender.getAccStage();
+			mult = accMultiplier[multStage];
+			int newAcc = static_cast<int>(mult * defender.getAcc());
+			defender.setAcc(newAcc);*/
             std::cout << defender.getPokeName() << "'s accuracy fell!" << std::endl;
         }
         if (effect[7] != 0) { // Debuff evasion
+			multStage = effect[7];
+			defender.setEvaStage(multStage);
+			/*multStage = defender.getEvaStage();
+			mult = evaMultiplier[multStage];
+			int newEva = static_cast<int>(mult * defender.getEva());
+			defender.setEva(newEva);*/
             std::cout << defender.getPokeName() << "'s evasion fell!" << std::endl;
         }
+    }
+}
+
+static int targetHit(Pokemon& attacker, Pokemon& defender, Move move) {
+	int accMove = move.getAcc();
+	
+    int stage = defender.getEvaStage() - attacker.getAccStage();
+	if (stage > 6) stage = 6;
+	else if (stage < -6) stage = -6;
+	double stageMultiplier = accMultiplier[stage];
+
+	int r = std::rand() % 100 + 1;
+
+    if (r <= (accMove * stageMultiplier)) {
+		return 1; // Hit
+	} else {
+		return 0; // Miss
     }
 }
 
@@ -717,9 +764,6 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
  * pokemon1 - Input array of pokemon1 stats
  * pokemon2 - Input array of pokemon2 stats
  * winner - Output array of winning pokemon
- * loser - Output array of losing pokemon
- * battleResult - Output array of battle results
- * numBattles - Number of battles to run
  */
 void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
     // Integrate process from Slowdown

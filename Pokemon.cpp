@@ -341,46 +341,70 @@ void Pokemon::setMove4(Move move){
     moves[3] = move;
 }
 
-int Pokemon::getPokeAcc(){
-    return pokeacc;
-}
+//int Pokemon::getAcc(){
+//    return pokeacc;
+//}
 
-double Pokemon::getPokeAccStage(){
+double Pokemon::getAccStage(){
     return statAcc[0];
 }
 
-void Pokemon::setAcc(int x) {
-    pokeacc = x;
+//void Pokemon::setAcc(int x) {
+//    pokeacc = x;
+//}
+
+void Pokemon::setAccStage(int x) {
+	statAcc[0] += x;
+	if (statAcc[0] > 6) {
+		statAcc[0] = 6;
+	}
+	else if (statAcc[0] < -6) {
+		statAcc[0] = -6;
+	}
 }
 
-void Pokemon::incAcc(int x){
-    if (pokeacc < 6){
-        pokeacc += x;
-    }
+//void Pokemon::incAcc(int x){
+//    if (pokeacc < 6){
+//        pokeacc += x;
+//    }
+//}
+//
+//void Pokemon::decAcc(int x){
+//    if (pokeacc > -6){
+//        pokeacc -= x;
+//    }
+//}
+
+//int Pokemon::getEva() {
+//    return evasion;
+//}
+
+double Pokemon::getEvaStage() {
+	return statEva[0];
 }
 
-void Pokemon::decAcc(int x){
-    if (pokeacc > -6){
-        pokeacc -= x;
-    }
+//void Pokemon::setEva(int x) {
+//    evasion = x;
+//}
+
+void Pokemon::setEvaStage(int x) {
+	statEva[0] += x;
+	if (statEva[0] > 6) {
+		statEva[0] = 6;
+	}
+	else if (statEva[0] < -6) {
+		statEva[0] = -6;
+	}
 }
 
-int Pokemon::getEva() {
-    return evasion;
-}
-
-void Pokemon::setEva(int x) {
-    evasion = x;
-}
-
-void Pokemon::incEva(int x) {
-    if (evasion < 6) {
-        evasion += x;
-    }
-}
-
-void Pokemon::decEva(int x) {
-    if (evasion > 6) {
-        evasion -= x;
-    }
-}
+//void Pokemon::incEva(int x) {
+//    if (evasion < 6) {
+//        evasion += x;
+//    }
+//}
+//
+//void Pokemon::decEva(int x) {
+//    if (evasion > 6) {
+//        evasion -= x;
+//    }
+//}

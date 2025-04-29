@@ -54,9 +54,10 @@ public:
     Move getMove4();
     Move getMove(int x);
     int getMovesNum();
-    int getPokeAcc();
-    double getPokeAccStage();
-    int getEva();
+    //int getAcc();
+    double getAccStage();
+    //int getEva();
+	double getEvaStage();
 
 	void setNature(NATURES nature);
     void setHP(int x);
@@ -74,12 +75,14 @@ public:
     void setMove2(Move move);
     void setMove3(Move move);
     void setMove4(Move move);
-    void setAcc(int x);
-    void incAcc(int x);
-    void decAcc(int x);
-    void setEva(int x);
-    void incEva(int x);
-    void decEva(int x);
+    //void setAcc(int x);
+	void setAccStage(int x);
+    /*void incAcc(int x);
+    void decAcc(int x);*/
+    //void setEva(int x);
+	void setEvaStage(int x);
+    /*void incEva(int x);
+    void decEva(int x);*/
 };
 
 #endif
