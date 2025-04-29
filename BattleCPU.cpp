@@ -747,7 +747,7 @@ static int targetHit(Pokemon& attacker, Pokemon& defender, Move move) {
     int stage = defender.getEvaStage() - attacker.getAccStage();
 	if (stage > 6) stage = 6;
 	else if (stage < -6) stage = -6;
-	double stageMultiplier = accMultiplier[stage];
+	double stageMultiplier = accMultiplier.at(stage);
 
 	int r = std::rand() % 100 + 1;
 
