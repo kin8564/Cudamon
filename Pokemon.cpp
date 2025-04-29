@@ -30,7 +30,7 @@ Pokemon::Pokemon(const char* monster, int hp, int atk, int def, int spa, int spd
 : healthPoints(hp), attack(atk), defense(def), specialAttack(spa), specialDefense(spd), speed(spe),
 type1(typeA), type2(typeB), pokeacc(0), evasion(0),statAtk{0, attack}, statDef{0, defense}, statSpa{0, specialAttack}, statSpd{0, specialDefense}, statSpe{0, speed},
 statAcc{0, 1.0}, statEva{0, 1.0}{
-    strncpy(Pokename, monster, sizeof(Pokename));
+    strncpy_s(Pokename, monster, sizeof(Pokename));
     Pokename[sizeof(Pokename) - 1] = '\0'; // Null-terminate just in case
 
     for (int i = 0; i < 4; ++i) {

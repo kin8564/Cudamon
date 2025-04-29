@@ -82,7 +82,7 @@
   <ItemGroup>
     <ClCompile Include="AttackDex.cpp" />
     <ClCompile Include="BattleCPU.cpp" />
-    <ClCompile Include="main.c" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Natures.cpp" />
     <ClCompile Include="PokeDex.cpp" />
