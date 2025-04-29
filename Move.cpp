@@ -23,7 +23,7 @@ Parameters:
 */
 Move::Move(const char* n, TYPES type, int cat, int pw, int acc, int points, int statArray[8])
         : type(type), category(cat), power(pw), accuracy(acc), pp(points) {
-        strncpy(name, n, sizeof(name));
+        strncpy_s(name, n, sizeof(name));
         name[sizeof(name) - 1] = '\0'; // Null-terminate just in case
         for (int j = 0; j < 8; ++j) statEffect[j] = statArray[j];
         }

@@ -7,6 +7,7 @@
 /* Kingsley Nwabeke, Mikyle Gregory                                     */
 /* April 8, 2025                                                        */
 /************************************************************************/
+#include "Pokemon.h"
 
 #ifndef __COMMON_H__
 #define __COMMON_H__
@@ -18,7 +19,7 @@
  * pokemon2 - Input array of pokemon2 stats
  * winner - Output of winning pokemon
  */
-void pokeBattleCPU( Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* winner );
+void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner);
 
 /**
  * SUBJECT TO CHANGE
@@ -27,6 +28,6 @@ void pokeBattleCPU( Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* winner );
  * pokemon2 - Input array of pokemon2 stats
  * winner - Output of winning pokemon
  */
-bool pokeBattleGPU( Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* winner );
+bool pokeBattleGPU(Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* results, int NUM_POKEMON);
 
 #endif

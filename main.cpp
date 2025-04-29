@@ -79,7 +79,7 @@ int main() {
 	}
 
 	for (int i = 0; i < team_size; i++) {
-		printf("Winner: %s", resultsGPU[i]);
+		printf("Winner: %s", resultsGPU[i].Pokename);
 	}
 	// Success
 	return 0;

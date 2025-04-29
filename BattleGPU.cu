@@ -26,7 +26,7 @@
 const int TILE_SIZE = 16;
 __device__ static int dmgArray[4];
 
-__constant__ double statMultiplier[13] = {
+__constant__ double statMultiplierGPU[13] = {
     2.0 / 8.0, 2.0 / 7.0, 2.0 / 6.0,
     2.0 / 5.0, 2.0 / 4.0, 2.0 / 3.0,
     2.0 / 2.0,
@@ -34,7 +34,7 @@ __constant__ double statMultiplier[13] = {
     6.0 / 2.0, 7.0 / 2.0, 8.0 / 2.0
 };
 
-__constant__ double accMultiplier[13] = {
+__constant__ double accMultiplierGPU[13] = {
     3.0 / 9.0, 3.0 / 8.0, 3.0 / 7.0,
     3.0 / 6.0, 3.0 / 5.0, 3.0 / 4.0,
     3.0 / 3.0,
@@ -42,7 +42,7 @@ __constant__ double accMultiplier[13] = {
     7.0 / 3.0, 8.0 / 3.0, 9.0 / 3.0
 };
 
-__constant__ double evaMultiplier[13] = {
+__constant__ double evaMultiplierGPU[13] = {
     9.0 / 3.0, 8.0 / 3.0, 7.0 / 3.0,
     6.0 / 3.0, 5.0 / 3.0, 4.0 / 3.0,
     3.0 / 3.0,
@@ -51,7 +51,14 @@ __constant__ double evaMultiplier[13] = {
 };
 
 
-__device__ static void typeMultiplier(int damage, Move move, Pokemon defender) {
+// GPU-compatible random number generation
+__device__ int getRandom(int seed, int offset) {
+    curandState state;
+    curand_init(seed, offset, 0, &state);
+    return curand(&state) % 100;
+}
+
+__device__ static void typeMultiplierGPU(int damage, Move move, Pokemon defender) {
     double modifier = 1.0;
     int superEff = 0;
     int notVeryEff = 0;
@@ -539,7 +546,7 @@ __device__ static void typeMultiplier(int damage, Move move, Pokemon defender) {
     dmgArray[3] = noEff;  // Update as necessary for no effect cases
 }
 
-__device__ void damageCalc(Pokemon& attacker, Pokemon& defender, Move move, int seed) {
+__device__ void damageCalcGPU(Pokemon& attacker, Pokemon& defender, Move move, int seed) {
     // Variables
     double critCalc = 0;
     double stab = 1.0;
@@ -575,17 +582,17 @@ __device__ void damageCalc(Pokemon& attacker, Pokemon& defender, Move move, int 
     }
 
     // Base damage calculation
-    int baseDamage = static_cast<int>((((22) * move.getPow() * (force / object)) / (50.0 + 2)) * critCalc * randFact * stab);
+    int baseDamage = static_cast<int>((((22) * move.power * (force / object)) / (50.0 + 2)) * critCalc * randFact * stab);
 
     // Get type multiplier
-    typeMultiplier(baseDamage, move, defender);
+    typeMultiplierGPU(baseDamage, move, defender);
     baseDamage = dmgArray[0];
 
     // Apply damage to defender's HP
-    defender.setHP(defender.getHP() - baseDamage);
+    defender.healthPoints -= baseDamage;
 }
 
-__device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
+__device__ void statusCalcGPU(Pokemon& attacker, Pokemon& defender, Move move) {
     // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
     int* effect = move.statEffect;
     double mult;
@@ -602,7 +609,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 attacker.statAtk[0] = -6;
             }
             multStage = attacker.statAtk[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newAtk = static_cast<int>(mult * attacker.statAtk[1]);
             attacker.statAtk[1] = newAtk;
             /*std::cout << attacker.getPokeName() << "'s attack rose!" << std::endl;*/
@@ -617,7 +624,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 attacker.statDef[0] = -6;
             }
             multStage = attacker.statDef[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newDef = static_cast<int>(mult * attacker.statDef[1]);
             attacker.statDef[1] = newDef;
             //std::cout << attacker.getPokeName() << "'s defense rose!" << std::endl;
@@ -632,7 +639,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 attacker.statSpa[0] = -6;
             }
             multStage = attacker.statSpa[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newSpa = static_cast<int>(mult * attacker.statSpa[1]);
             attacker.statSpa[1] = newSpa;
             //std::cout << attacker.getPokeName() << "'s special attack rose!" << std::endl;
@@ -647,7 +654,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 attacker.statSpd[0] = -6;
             }
             multStage = attacker.statSpd[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newSpd = static_cast<int>(mult * attacker.statSpd[1]);
             attacker.statSpd[1] = newSpd;
             //std::cout << attacker.getPokeName() << "'s special defense rose!" << std::endl;
@@ -662,7 +669,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 attacker.statSpe[0] = -6;
             }
             multStage = attacker.statSpe[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newSpe = static_cast<int>(mult * attacker.statSpe[1]);
             attacker.statSpe[1] = newSpe;
             //std::cout << attacker.getPokeName() << "'s speed rose!" << std::endl;
@@ -685,7 +692,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 defender.statAtk[0] = -6;
             }
             multStage = defender.statAtk[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newAtk = static_cast<int>(mult * defender.statAtk[1]);
             defender.statAtk[1] = newAtk;
             //std::cout << defender.getPokeName() << "'s attack fell!" << std::endl;
@@ -700,7 +707,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 defender.statDef[0] = -6;
             }
             multStage = defender.statDef[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newDef = static_cast<int>(mult * defender.statDef[1]);
             defender.statDef[1] = newDef;
             //std::cout << defender.getPokeName() << "'s defense fell!" << std::endl;
@@ -715,7 +722,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 defender.statSpa[0] = -6;
             }
             multStage = defender.statSpa[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newSpa = static_cast<int>(mult * defender.statSpa[1]);
             defender.statSpa[1] = newSpa;
             //std::cout << defender.getPokeName() << "'s special attack fell!" << std::endl;
@@ -730,7 +737,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 defender.statSpd[0] = -6;
             }
             multStage = defender.statSpd[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newSpd = static_cast<int>(mult * defender.statSpd[1]);
             defender.statSpd[1] = newSpd;
             //std::cout << defender.getPokeName() << "'s special defense fell!" << std::endl;
@@ -745,7 +752,7 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
                 defender.statSpe[0] = -6;
             }
             multStage = defender.statSpe[0];
-            mult = statMultiplier[multStage];
+            mult = statMultiplierGPU[multStage];
             int newSpe = static_cast<int>(mult * defender.statSpe[1]);
             defender.statSpe[1] = newSpe;
             //std::cout << defender.getPokeName() << "'s speed fell!" << std::endl;
@@ -759,16 +766,9 @@ __device__ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
     }
 }
 
-// GPU-compatible random number generation
-__device__ int getRandom(int seed, int offset) {
-    curandState state;
-    curand_init(seed, offset, 0, &state);
-    return curand(&state) % 100;
-}
-
 __device__ void battleGPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner, int seed) {
     int moveIndex;
-    Move selected;
+    Move selected = pokemon1.moves[0]; // initial move bc I don't want to figure out the actual problem
 
     while (pokemon1.healthPoints >= 1 && pokemon2.healthPoints >= 1) {
         if (pokemon1.statSpe[1] > pokemon2.statSpe[1]) {
@@ -776,10 +776,10 @@ __device__ void battleGPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner,
             selected = pokemon1.moves[moveIndex];
 
             if (selected.category == 3) {
-                statusCalc(pokemon1, pokemon2, selected);
+                statusCalcGPU(pokemon1, pokemon2, selected);
             }
             else {
-                damageCalc(pokemon1, pokemon2, selected, seed);
+                damageCalcGPU(pokemon1, pokemon2, selected, seed);
             }
 
             if (pokemon2.healthPoints < 1) break;
@@ -788,10 +788,10 @@ __device__ void battleGPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner,
             selected = pokemon2.moves[moveIndex];
 
             if (selected.category == 3) {
-                statusCalc(pokemon2, pokemon1, selected);
+                statusCalcGPU(pokemon2, pokemon1, selected);
             }
             else {
-                damageCalc(pokemon2, pokemon1, selected, seed);
+                damageCalcGPU(pokemon2, pokemon1, selected, seed);
             }
         }
         else {
@@ -799,10 +799,10 @@ __device__ void battleGPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner,
             selected = pokemon2.moves[moveIndex];
 
             if (selected.category == 3) {
-                statusCalc(pokemon2, pokemon1, selected);
+                statusCalcGPU(pokemon2, pokemon1, selected);
             }
             else {
-                damageCalc(pokemon2, pokemon1, selected, seed);
+                damageCalcGPU(pokemon2, pokemon1, selected, seed);
             }
 
             if (pokemon1.healthPoints < 1) break;
@@ -811,10 +811,10 @@ __device__ void battleGPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner,
             selected = pokemon1.moves[moveIndex];
 
             if (selected.category == 3) {
-                statusCalc(pokemon1, pokemon2, selected);
+                statusCalcGPU(pokemon1, pokemon2, selected);
             }
             else {
-                damageCalc(pokemon1, pokemon2, selected, seed);
+                damageCalcGPU(pokemon1, pokemon2, selected, seed);
             }
         }
     }

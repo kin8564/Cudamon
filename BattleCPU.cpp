@@ -614,7 +614,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[1];
             attacker.setAtkStage(multStage);
             multStage = attacker.getAtkStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newAtk = static_cast<int>(mult * attacker.getAtk());
             attacker.setAtk(newAtk);
             std::cout << attacker.getPokeName() << "'s attack rose!" << std::endl;
@@ -623,7 +623,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[2];
             attacker.setDefStage(multStage);
             multStage = attacker.getDefStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newDef = static_cast<int>(mult * attacker.getDef());
             attacker.setDef(newDef);
             std::cout << attacker.getPokeName() << "'s defense rose!" << std::endl;
@@ -632,7 +632,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[3];
             attacker.setSpaStage(multStage);
             multStage = attacker.getSpaStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newSpa = static_cast<int>(mult * attacker.getSpa());
             attacker.setSpa(newSpa);
             std::cout << attacker.getPokeName() << "'s special attack rose!" << std::endl;
@@ -641,7 +641,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[4];
             attacker.setSpdStage(multStage);
             multStage = attacker.getSpdStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newSpd = static_cast<int>(mult * attacker.getSpd());
             attacker.setSpd(newSpd);
             std::cout << attacker.getPokeName() << "'s special defense rose!" << std::endl;
@@ -650,7 +650,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[5];
             attacker.setSpeStage(multStage);
             multStage = attacker.getSpeStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newSpe = static_cast<int>(mult * attacker.getSpe());
             attacker.setSpe(newSpe);
             std::cout << attacker.getPokeName() << "'s speed rose!" << std::endl;
@@ -679,7 +679,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[1];
             defender.setAtkStage(multStage);
             multStage = defender.getAtkStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newAtk = static_cast<int>(mult * defender.getAtk());
             defender.setAtk(newAtk);
             std::cout << defender.getPokeName() << "'s attack fell!" << std::endl;
@@ -688,7 +688,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[2];
             defender.setDefStage(multStage);
             multStage = defender.getDefStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newDef = static_cast<int>(mult * defender.getDef());
             defender.setDef(newDef);
             std::cout << defender.getPokeName() << "'s defense fell!" << std::endl;
@@ -697,7 +697,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[3];
             defender.setSpaStage(multStage);
             multStage = defender.getSpaStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newSpa = static_cast<int>(mult * defender.getSpa());
             defender.setSpa(newSpa);
             std::cout << defender.getPokeName() << "'s special attack fell!" << std::endl;
@@ -706,7 +706,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[4];
             defender.setSpdStage(multStage);
             multStage = defender.getSpdStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newSpd = static_cast<int>(mult * defender.getSpd());
             defender.setSpd(newSpd);
             std::cout << defender.getPokeName() << "'s special defense fell!" << std::endl;
@@ -715,7 +715,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             multStage = effect[5];
             defender.setSpeStage(multStage);
             multStage = defender.getSpeStage();
-            mult = statMultiplier[multStage];
+            mult = statMultiplier.at(multStage);
             int newSpe = static_cast<int>(mult * defender.getSpe());
             defender.setSpe(newSpe);
             std::cout << defender.getPokeName() << "'s speed fell!" << std::endl;
