@@ -61,7 +61,7 @@ int main() {
 	// Run battles in series
 	for (int i = 0; i < ITERS; i++) {
 		Pokemon victor;
-		pokeBattleCPU(&Charmander, &Squirtle, &victor);
+		pokeBattleCPU(Charmander, Squirtle, victor);
 	}
 
 	// Display results

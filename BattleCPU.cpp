@@ -536,6 +536,24 @@ static std::vector<int> typeMultiplier(int damage, Move move, Pokemon defender) 
     return dmgArray;
 }
 
+static int targetHit(Pokemon& attacker, Pokemon& defender, Move move) {
+    int accMove = move.getAcc();
+
+    int stage = defender.getEvaStage() - attacker.getAccStage();
+    if (stage > 6) stage = 6;
+    else if (stage < -6) stage = -6;
+    double stageMultiplier = accMultiplier.at(stage);
+
+    int r = std::rand() % 100 + 1;
+
+    if (r <= (accMove * stageMultiplier)) {
+        return 1; // Hit
+    }
+    else {
+        return 0; // Miss
+    }
+}
+
 static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
     // Initialize random number generator
     std::srand(static_cast<unsigned int>(std::time(0)));
@@ -547,7 +565,7 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
     double object = 0;
 
     // Determine if the move hits its target
-    if (!targetHit) {
+    if (!targetHit(attacker, defender, move)) {
         std::cout << "The attack missed!" << std::endl;
     } else {
 
@@ -738,23 +756,6 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
 			defender.setEva(newEva);*/
             std::cout << defender.getPokeName() << "'s evasion fell!" << std::endl;
         }
-    }
-}
-
-static int targetHit(Pokemon& attacker, Pokemon& defender, Move move) {
-	int accMove = move.getAcc();
-	
-    int stage = defender.getEvaStage() - attacker.getAccStage();
-	if (stage > 6) stage = 6;
-	else if (stage < -6) stage = -6;
-	double stageMultiplier = accMultiplier.at(stage);
-
-	int r = std::rand() % 100 + 1;
-
-    if (r <= (accMove * stageMultiplier)) {
-		return 1; // Hit
-	} else {
-		return 0; // Miss
     }
 }
 
