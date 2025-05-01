@@ -2,7 +2,6 @@
 
 #include "Move.h"
 #include "Types.h"
-#include "Move.h"
 #include "Natures.h"
 
 #define MAX_POKEMON 1000
@@ -18,6 +17,15 @@ struct PokemonData {
     int accuracy[MAX_POKEMON];
     int evasion[MAX_POKEMON];
 
+    int statAtk[MAX_POKEMON][2];
+    int statDef[MAX_POKEMON][2];
+    int statSpa[MAX_POKEMON][2];
+    int statSpd[MAX_POKEMON][2];
+    int statSpe[MAX_POKEMON][2];
+
+    double statAcc[MAX_POKEMON][2];
+    double statEva[MAX_POKEMON][2];
+
     TYPES type1[MAX_POKEMON];
     TYPES type2[MAX_POKEMON];
 
@@ -25,4 +33,3 @@ struct PokemonData {
 
     Move moves[MAX_POKEMON][MAX_MOVES];
 };
-
