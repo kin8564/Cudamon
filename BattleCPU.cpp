@@ -842,7 +842,7 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
             }
             canUse--;
 
-            std::cout << pokemon1.getPokeName() << " used " << selected.getName() << std::endl;
+            std::cout << pokemon2.getPokeName() << " used " << selected.getName() << std::endl;
 
             if (selected.getCat() == 3) {
                 statusCalc(pokemon2, pokemon1, selected);
@@ -867,7 +867,7 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
             }
             canUse--;
 
-            std::cout << pokemon2.getPokeName() << " used " << selected.getName() << std::endl;
+            std::cout << pokemon1.getPokeName() << " used " << selected.getName() << std::endl;
 
             if (selected.getCat() == 3) {
                 statusCalc(pokemon1, pokemon2, selected);
