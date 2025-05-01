@@ -6,35 +6,15 @@
 #include "Move.h"
 #include "Natures.h"
 
-char Pokename[30];
-
-int healthPoints, attack, defense, specialAttack, specialDefense, speed, pokeacc, evasion;
-
-TYPES type1;
-TYPES type2;
-
-NATURES weirdo;
-
-Move moves[4];
-
-int statAtk[2];  // {stage, actual}
-int statDef[2];
-int statSpa[2];
-int statSpd[2];
-int statSpe[2];
-
-double statAcc[2];  // {stage, multiplier}
-double statEva[2];
-
 Pokemon::Pokemon(const char* monster, int hp, int atk, int def, int spa, int spd, int spe, TYPES typeA, TYPES typeB)
 : healthPoints(hp), attack(atk), defense(def), specialAttack(spa), specialDefense(spd), speed(spe),
 type1(typeA), type2(typeB), pokeacc(0), evasion(0),statAtk{0, attack}, statDef{0, defense}, statSpa{0, specialAttack}, statSpd{0, specialDefense}, statSpe{0, speed},
 statAcc{0, 1.0}, statEva{0, 1.0}{
-    strncpy_s(Pokename, monster, sizeof(Pokename));
-    Pokename[sizeof(Pokename) - 1] = '\0'; // Null-terminate just in case
+    strncpy_s(this->Pokename, sizeof(this->Pokename), monster, 30);
+    this->Pokename[sizeof(this->Pokename) - 1] = '\0'; // Null-terminate just in case
 
     for (int i = 0; i < 4; ++i) {
-        moves[i] = Move();
+        this->moves[i] = Move();
     }
 }
 
@@ -42,138 +22,134 @@ Pokemon::Pokemon(){}
 
 //Change the base stats of the Pokemon based on the nature
 void Pokemon::setNature(NATURES nature) {
-   switch (nature) {
-       case NATURES::HARDY:    //Inc Atk, Dec Atk
-           break;
-       case NATURES::LONELY:   //Inc Atk, Dec Def
-           this->attack = this->attack * 1.1;
-           setAtk(this->attack);
-           this->defense = this->defense * 0.9;
-           setDef(this->defense);
-           break;
-       case NATURES::BRAVE:    //Inc Atk, Dec Spe
-           this->attack = this->attack * 1.1;
-           setAtk(this->attack);
-           this->speed = this->speed * 0.9;
-           setSpe(this->speed);
-           break;
-       case NATURES::ADAMANT:  //Inc Atk, Dec Spa
-           this->attack = this->attack * 1.1;
-           setAtk(this->attack);
-           this->specialAttack = this->specialAttack * 0.9;
-           setSpa(this->specialAttack);
-           break;
-       case NATURES::NAUGHTY:  //Inc Atk, Dec SpD
-           this->attack = this->attack * 1.1;
-           setAtk(this->attack);
-           this->specialDefense = this->specialDefense * 0.9;
-           setSpd(this->specialDefense);
-           break;
-       case NATURES::BOLD:     //Inc Def, Dec Atk
-           this->defense = this->defense * 1.1;
-           setDef(this->defense);
-           this->attack = this->attack * 0.9;
-           setAtk(this->attack);
-           break;
-       case NATURES::DOCILE:   //Inc Def, Dec Def
-           break;
-       case NATURES::RELAXED:  //Inc Def, Dec Spe
-           this->defense = this->defense * 1.1;
-           setDef(this->defense);
-           this->speed = this->speed * 0.9;
-           setSpe(this->speed);
-           break;
-       case NATURES::IMPISH:   //Inc Def, Dec Spa
-           this->defense = this->defense * 1.1;
-           setDef(this->defense);
-           this->specialAttack = this->specialAttack * 0.9;
-           setSpa(this->specialAttack);
-           break;
-       case NATURES::LAX:      //Inc Def, Dec SpD
-           this->defense = this->defense * 1.1;
-           setDef(this->defense);
-           this->specialDefense = this->specialDefense * 0.9;
-           setSpd(this->specialDefense);
-           break;
-       case NATURES::TIMID:    //Inc Spe, Dec Atk
-           this->speed = this->speed * 1.1;
-           setSpe(this->speed);
-           this->attack = this->attack * 0.9;
-           setAtk(this->attack);
-           break;
-       case NATURES::HASTY:    //Inc Spe, Dec Def
-           this->speed = this->speed * 1.1;
-           setSpe(this->speed);
-           this->defense = this->defense * 0.9;
-           setDef(this->defense);
-           break;
-       case NATURES::SERIOUS:  //Inc Spe, Dec Spe
-           break;
-       case NATURES::JOLLY:    //Inc Spe, Dec Spa
-           this->speed = this->speed * 1.1;
-           setSpe(this->speed);
-           this->specialAttack = this->specialAttack * 0.9;
-           setSpa(this->specialAttack);
-           break;
-       case NATURES::NAIVE:    //Inc Spe, Dec SpD
-           this->speed = this->speed * 1.1;
-           setSpe(this->speed);
-           this->specialDefense = this->specialDefense * 0.9;
-           setSpd(this->specialDefense);
-           break;
-       case NATURES::MODEST:   //Inc Spa, Dec Atk
-           this->specialAttack = this->specialAttack * 1.1;
-           setSpa(this->specialAttack);
-           this->attack = this->attack * 0.9;
-           setAtk(this->attack);
-           break;
-       case NATURES::MILD:     //Inc Spa, Dec Def
-           this->specialAttack = this->specialAttack * 1.1;
-           setSpa(this->specialAttack);
-           this->defense = this->defense * 0.9;
-           setDef(this->defense);
-           break;
-       case NATURES::QUIET:    //Inc Spa, Dec Spe
-           this->specialAttack = this->specialAttack * 1.1;
-           setSpa(this->specialAttack);
-           this->speed = this->speed * 0.9;
-           setSpe(this->speed);
-           break;
-       case NATURES::BASHFUL:  //Inc Spa, Dec SpD
-           break;
-       case NATURES::RASH:     //Inc Spa, Dec SpD
-           this->specialAttack = this->specialAttack * 1.1;
-           setSpa(this->specialAttack);
-           this->specialDefense = this->specialDefense * 0.9;
-           setSpd(this->specialDefense);
-           break;
-       case NATURES::CALM:     //Inc SpD, Dec Atk
-           this->specialDefense = this->specialDefense * 1.1;
-           setSpd(this->specialDefense);
-           this->attack = this->attack * 0.9;
-           setAtk(this->attack);
-           break;
-       case NATURES::GENTLE:   //Inc SpD, Dec Def
-           this->specialDefense = this->specialDefense * 1.1;
-           setSpd(this->specialDefense);
-           this->defense = this->defense * 0.9;
-           setDef(this->defense);
-           break;
-       case NATURES::SASSY:    //Inc SpD, Dec Spe
-           this->specialDefense = this->specialDefense * 1.1;
-           setSpd(this->specialDefense);
-           this->speed = this->speed * 0.9;
-           setSpe(this->speed);
-           break;
-       case NATURES::CAREFUL:  //Inc SpD, Dec Spa
-           this->specialDefense = this->specialDefense * 1.1;
-           setSpd(this->specialDefense);
-           this->specialAttack = this->specialAttack * 0.9;
-           setSpa(this->specialAttack);
-           break;
-       case NATURES::QUIRKY:   //Inc SpD, Dec SpD
-           break;
-   }
+    switch (nature) {
+    case NATURES::HARDY:    // Inc Atk, Dec Atk
+    case NATURES::DOCILE:   // Inc Def, Dec Def
+    case NATURES::SERIOUS:  // Inc Spe, Dec Spe
+    case NATURES::BASHFUL:  // Inc Spa, Dec SpD
+    case NATURES::QUIRKY:   // Inc SpD, Dec SpD
+        break;
+    case NATURES::LONELY:   // Inc Atk, Dec Def
+        attack = static_cast<int>(std::round(attack * 1.1));
+        setAtk(attack);
+        defense = static_cast<int>(std::round(defense * 0.9));
+        setDef(defense);
+        break;
+    case NATURES::BRAVE:    // Inc Atk, Dec Spe
+        attack = static_cast<int>(std::round(attack * 1.1));
+        setAtk(attack);
+        speed = static_cast<int>(std::round(speed * 0.9));
+        setSpe(speed);
+        break;
+    case NATURES::ADAMANT:  // Inc Atk, Dec Spa
+        attack = static_cast<int>(std::round(attack * 1.1));
+        setAtk(attack);
+        specialAttack = static_cast<int>(std::round(specialAttack * 0.9));
+        setSpa(specialAttack);
+        break;
+    case NATURES::NAUGHTY:  // Inc Atk, Dec SpD
+        attack = static_cast<int>(std::round(attack * 1.1));
+        setAtk(attack);
+        specialDefense = static_cast<int>(std::round(specialDefense * 0.9));
+        setSpd(specialDefense);
+        break;
+    case NATURES::BOLD:     // Inc Def, Dec Atk
+        defense = static_cast<int>(std::round(defense * 1.1));
+        setDef(defense);
+        attack = static_cast<int>(std::round(attack * 0.9));
+        setAtk(attack);
+        break;
+    case NATURES::RELAXED:  // Inc Def, Dec Spe
+        defense = static_cast<int>(std::round(defense * 1.1));
+        setDef(defense);
+        speed = static_cast<int>(std::round(speed * 0.9));
+        setSpe(speed);
+        break;
+    case NATURES::IMPISH:   // Inc Def, Dec Spa
+        defense = static_cast<int>(std::round(defense * 1.1));
+        setDef(defense);
+        specialAttack = static_cast<int>(std::round(specialAttack * 0.9));
+        setSpa(specialAttack);
+        break;
+    case NATURES::LAX:      // Inc Def, Dec SpD
+        defense = static_cast<int>(std::round(defense * 1.1));
+        setDef(defense);
+        specialDefense = static_cast<int>(std::round(specialDefense * 0.9));
+        setSpd(specialDefense);
+        break;
+    case NATURES::TIMID:    // Inc Spe, Dec Atk
+        speed = static_cast<int>(std::round(speed * 1.1));
+        setSpe(speed);
+        attack = static_cast<int>(std::round(attack * 0.9));
+        setAtk(attack);
+        break;
+    case NATURES::HASTY:    // Inc Spe, Dec Def
+        speed = static_cast<int>(std::round(speed * 1.1));
+        setSpe(speed);
+        defense = static_cast<int>(std::round(defense * 0.9));
+        setDef(defense);
+        break;
+    case NATURES::JOLLY:    // Inc Spe, Dec Spa
+        speed = static_cast<int>(std::round(speed * 1.1));
+        setSpe(speed);
+        specialAttack = static_cast<int>(std::round(specialAttack * 0.9));
+        setSpa(specialAttack);
+        break;
+    case NATURES::NAIVE:    // Inc Spe, Dec SpD
+        speed = static_cast<int>(std::round(speed * 1.1));
+        setSpe(speed);
+        specialDefense = static_cast<int>(std::round(specialDefense * 0.9));
+        setSpd(specialDefense);
+        break;
+    case NATURES::MODEST:   // Inc Spa, Dec Atk
+        specialAttack = static_cast<int>(std::round(specialAttack * 1.1));
+        setSpa(specialAttack);
+        attack = static_cast<int>(std::round(attack * 0.9));
+        setAtk(attack);
+        break;
+    case NATURES::MILD:     // Inc Spa, Dec Def
+        specialAttack = static_cast<int>(std::round(specialAttack * 1.1));
+        setSpa(specialAttack);
+        defense = static_cast<int>(std::round(defense * 0.9));
+        setDef(defense);
+        break;
+    case NATURES::QUIET:    // Inc Spa, Dec Spe
+        specialAttack = static_cast<int>(std::round(specialAttack * 1.1));
+        setSpa(specialAttack);
+        speed = static_cast<int>(std::round(speed * 0.9));
+        setSpe(speed);
+        break;
+    case NATURES::RASH:     // Inc Spa, Dec SpD
+        specialAttack = static_cast<int>(std::round(specialAttack * 1.1));
+        setSpa(specialAttack);
+        specialDefense = static_cast<int>(std::round(specialDefense * 0.9));
+        setSpd(specialDefense);
+        break;
+    case NATURES::CALM:     // Inc SpD, Dec Atk
+        specialDefense = static_cast<int>(std::round(specialDefense * 1.1));
+        setSpd(specialDefense);
+        attack = static_cast<int>(std::round(attack * 0.9));
+        setAtk(attack);
+        break;
+    case NATURES::GENTLE:   // Inc SpD, Dec Def
+        specialDefense = static_cast<int>(std::round(specialDefense * 1.1));
+        setSpd(specialDefense);
+        defense = static_cast<int>(std::round(defense * 0.9));
+        setDef(defense);
+        break;
+    case NATURES::SASSY:    // Inc SpD, Dec Spe
+        specialDefense = static_cast<int>(std::round(specialDefense * 1.1));
+        setSpd(specialDefense);
+        speed = static_cast<int>(std::round(speed * 0.9));
+        setSpe(speed);
+        break;
+    case NATURES::CAREFUL:  // Inc SpD, Dec Spa
+        specialDefense = static_cast<int>(std::round(specialDefense * 1.1));
+        setSpd(specialDefense);
+        specialAttack = static_cast<int>(std::round(specialAttack * 0.9));
+        setSpa(specialAttack);
+        break;
+    }
 }
 
 char* Pokemon::getPokeName() {

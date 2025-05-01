@@ -4,12 +4,6 @@
 #include "Types.h"
 #include "Move.h"
 
-char name[30];
-TYPES type;
-int category;
-int power, accuracy, pp;
-int statEffect[8]; // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
-
 /*
 Constructor for Move
 Parameters:

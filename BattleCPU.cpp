@@ -539,7 +539,7 @@ static std::vector<int> typeMultiplier(int damage, Move move, Pokemon defender) 
 static int targetHit(Pokemon& attacker, Pokemon& defender, Move move) {
     int accMove = move.getAcc();
 
-    int stage = defender.getEvaStage() - attacker.getAccStage();
+    int stage = static_cast<int>(defender.getEvaStage() - attacker.getAccStage());
     if (stage > 6) stage = 6;
     else if (stage < -6) stage = -6;
     double stageMultiplier = accMultiplier.at(stage);

@@ -5,8 +5,6 @@
 #include "Types.h"
 #include "AttackDex.h"
 
-std::unordered_map<std::string, Move> attackdex;
-
 void AttackDex::populate() {
     int empty[8] = {0};  // default zeroed effect
 

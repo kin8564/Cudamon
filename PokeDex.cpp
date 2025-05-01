@@ -7,8 +7,6 @@
 #include "AttackDex.h"
 #include "PokeDex.h"
 
-Pokemon pokedex[152];
-
 PokeDex::PokeDex(){}
 
 void PokeDex::dexpopulate() {

@@ -8,6 +8,7 @@
 /* April 8, 2025                                                        */
 /************************************************************************/
 #include "Pokemon.h"
+#include "PokemonData.h"
 
 #ifndef __COMMON_H__
 #define __COMMON_H__
@@ -29,5 +30,7 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner);
  * winner - Output of winning pokemon
  */
 bool pokeBattleGPU(Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* results, int NUM_POKEMON);
+
+bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBattles);
 
 #endif

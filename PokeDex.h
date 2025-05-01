@@ -11,7 +11,7 @@
 class PokeDex{
     public:
         PokeDex();
-        Pokemon pokedex[151];
+        Pokemon pokedex[152];
 
         void dexpopulate();
 
