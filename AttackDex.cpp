@@ -26,6 +26,7 @@ void AttackDex::populate() {
 	attackdex["Take Down"] = Move("Take Down", TYPES::NORMAL, 1, 90, 85, 20, empty);
 	int sweetScentEffect[8] = { 1, 0, 0, 0, 0, 0, 0, -1 }; // lower target evasion
 	attackdex["Sweet Scent"] = Move("Sweet Scent", TYPES::NORMAL, 3, 0, 100, 20, sweetScentEffect);
+	attackdex["Energy Ball"] = Move("Energy Ball", TYPES::GRASS, 2, 90, 100, 10, empty);
 
     attackdex["Water Gun"] = Move("Water Gun", TYPES::WATER, 2, 40, 100, 25, empty);
     attackdex["Ember"] = Move("Ember", TYPES::FIRE, 2, 40, 100, 25, empty);
@@ -39,6 +40,8 @@ void AttackDex::populate() {
     int smokescreenEffect[8] = {1, 0, 0, 0, 0, 0, -1, 0}; // lower target accuracy
     attackdex["Smokescreen"] = Move("Smokescreen", TYPES::NORMAL, 3, 0, 100, 20, smokescreenEffect);
 	attackdex["Flamethrower"] = Move("Flamethrower", TYPES::FIRE, 2, 90, 100, 15, empty);
+	attackdex["Air Slash"] = Move("Air Slash", TYPES::FLYING, 2, 75, 95, 15, empty);
+	attackdex["Dragon Claw"] = Move("Dragon Claw", TYPES::DRAGON, 1, 80, 100, 15, empty);
 
 	attackdex["Hydro Pump"] = Move("Hydro Pump", TYPES::WATER, 2, 110, 80, 5, empty);
 	attackdex["Surf"] = Move("Surf", TYPES::WATER, 2, 90, 100, 15, empty);

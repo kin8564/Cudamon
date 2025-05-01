@@ -20,6 +20,7 @@ struct Move {
         int getPow();
         int getAcc();
         int getPP();
+        void useMove();
         int* getEff();
 };
 

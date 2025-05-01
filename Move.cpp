@@ -53,6 +53,10 @@ int Move::getPP() {
     return pp;
 }
 
+void Move::useMove() {
+    pp = pp - 1;
+}
+
 int* Move::getEff() {
     return statEffect;
 }

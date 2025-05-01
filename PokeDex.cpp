@@ -22,7 +22,10 @@ void PokeDex::dexpopulate() {
     pokedex[1].setMove4(attackDex.attackdex["Growth"]);
     
 	pokedex[3] = Pokemon("Venusaur", 187, 147, 148, 167, 167, 145, TYPES::GRASS, TYPES::POISON);
-
+    pokedex[3].setMove1(attackDex.attackdex["Petal Blizzard"]);
+    pokedex[3].setMove2(attackDex.attackdex["Take Down"]);
+    pokedex[3].setMove3(attackDex.attackdex["Energy Ball"]);
+    pokedex[3].setMove4(attackDex.attackdex["Sweet Scent"]);
 
     pokedex[4] = Pokemon("Charmander", 146, 114, 104, 123, 112, 128, TYPES::FIRE, TYPES::NONE);
     pokedex[4].setMove1(attackDex.attackdex["Scratch"]);
@@ -31,6 +34,11 @@ void PokeDex::dexpopulate() {
     pokedex[4].setMove4(attackDex.attackdex["Smokescreen"]);
 
 	pokedex[6] = Pokemon("Charizard", 185, 149, 143, 177, 150, 167, TYPES::FIRE, TYPES::FLYING);
+    pokedex[6].setMove1(attackDex.attackdex["Flamethrower"]);
+    pokedex[6].setMove2(attackDex.attackdex["Air Slash"]);
+    pokedex[6].setMove3(attackDex.attackdex["Dragon Claw"]);
+    pokedex[6].setMove4(attackDex.attackdex["Smokescreen"]);
+
 
     pokedex[7] = Pokemon("Squirtle", 151, 110, 128, 112, 127, 104, TYPES::WATER, TYPES::NONE);
     pokedex[7].setMove1(attackDex.attackdex["Tackle"]);

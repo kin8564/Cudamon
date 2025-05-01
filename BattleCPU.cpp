@@ -539,7 +539,7 @@ static std::vector<int> typeMultiplier(int damage, Move move, Pokemon defender) 
 static int targetHit(Pokemon& attacker, Pokemon& defender, Move move) {
     int accMove = move.getAcc();
 
-    int stage = static_cast<int>(defender.getEvaStage() - attacker.getAccStage());
+    int stage = static_cast<int>(attacker.getAccStage() - defender.getEvaStage());
     if (stage > 6) stage = 6;
     else if (stage < -6) stage = -6;
     double stageMultiplier = accMultiplier.at(stage);
@@ -580,6 +580,7 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
         }
 
         // Critical hit calculation
+        // TODO
         critCalc = std::rand() % 256;
         if (critCalc < (attacker.getSpe() / 2)) {
             critCalc = 1.5;
@@ -603,6 +604,7 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
         // Get type multiplier
         std::vector<int> dmgArray = typeMultiplier(baseDamage, move, defender);
         baseDamage = dmgArray[0];
+        if (baseDamage < 1) baseDamage = 1;
 
         // Determine effectiveness
         if (dmgArray[1] == 1) {
@@ -775,21 +777,47 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
     // Until KO
     while (pokemon1.getHP() >= 1 && pokemon2.getHP() >= 1) {
         Move selected;
+        int canUse = 0;
         if (pokemon1.getSpe() > pokemon2.getSpe()) {
             // Friend attacks first
-            selected = pokemon1.getMove(rng() % pokemon1.getMovesNum());
+            while (!canUse) {   // Check if move can be used
+                selected = pokemon1.getMove(rng() % pokemon1.getMovesNum());
+                if (selected.getPP() < 1) {
+                    std::cout << selected.getName() << " is out of PP!" << std::endl;
+                } else {
+                    selected.useMove();
+                    canUse++;
+                }
+            }
+            canUse--;
 
-            if (selected.getCat() == 3) {
+            std::cout << pokemon1.getPokeName() << " used " << selected.getName() << std::endl;
+
+            if (selected.getCat() == 3) {   // Check if move is a status move or an attack
                 statusCalc(pokemon1, pokemon2, selected);
             }
             else {
                 damageCalc(pokemon1, pokemon2, selected);
             }
+            std::cout << std::endl;
 
             if (pokemon2.getHP() < 1) break;
 
+
             // Foe attacks
-            selected = pokemon2.getMove(rng() % pokemon2.getMovesNum());
+            while (!canUse) {
+                selected = pokemon2.getMove(rng() % pokemon2.getMovesNum());
+                if (selected.getPP() < 1) {
+                    std::cout << selected.getName() << " is out of PP!" << std::endl;
+                }
+                else {
+                    selected.useMove();
+                    canUse++;
+                }
+            }
+            canUse--;
+
+            std::cout << pokemon2.getPokeName() << " used " << selected.getName() << std::endl;
 
             if (selected.getCat() == 3) {
                 statusCalc(pokemon2, pokemon1, selected);
@@ -797,11 +825,24 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
             else {
                 damageCalc(pokemon2, pokemon1, selected);
             }
+            std::cout << std::endl;
 
         }
         else {
             // Foe attacks first
-            selected = pokemon2.getMove(rng() % pokemon2.getMovesNum());
+            while (!canUse) {
+                selected = pokemon2.getMove(rng() % pokemon2.getMovesNum());
+                if (selected.getPP() < 1) {
+                    std::cout << selected.getName() << " is out of PP!" << std::endl;
+                }
+                else {
+                    selected.useMove();
+                    canUse++;
+                }
+            }
+            canUse--;
+
+            std::cout << pokemon1.getPokeName() << " used " << selected.getName() << std::endl;
 
             if (selected.getCat() == 3) {
                 statusCalc(pokemon2, pokemon1, selected);
@@ -809,11 +850,24 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
             else {
                 damageCalc(pokemon2, pokemon1, selected);
             }
+            std::cout << std::endl;
 
             if (pokemon1.getHP() < 1) break;
 
             // Friend attacks
-            selected = pokemon1.getMove(rng() % pokemon1.getMovesNum());
+            while (!canUse) {   // Check if move can be used
+                selected = pokemon1.getMove(rng() % pokemon1.getMovesNum());
+                if (selected.getPP() < 1) {
+                    std::cout << selected.getName() << " is out of PP!" << std::endl;
+                }
+                else {
+                    selected.useMove();
+                    canUse++;
+                }
+            }
+            canUse--;
+
+            std::cout << pokemon2.getPokeName() << " used " << selected.getName() << std::endl;
 
             if (selected.getCat() == 3) {
                 statusCalc(pokemon1, pokemon2, selected);
@@ -821,6 +875,7 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
             else {
                 damageCalc(pokemon1, pokemon2, selected);
             }
+            std::cout << std::endl;
         }
     }
 

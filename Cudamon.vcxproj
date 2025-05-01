@@ -96,6 +96,7 @@
     <ClInclude Include="Natures.h" />
     <ClInclude Include="PokeDex.h" />
     <ClInclude Include="Pokemon.h" />
+    <ClInclude Include="PokemonData.h" />
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
