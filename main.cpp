@@ -11,6 +11,7 @@
 #include "PokemonData.h"
 #include <fstream>
 #include <random>
+#include <iomanip>  
 
 #ifndef COMMON_H
 #include "common.h"
@@ -18,7 +19,6 @@
 
 const int ITERS = 1;
 const int ITERSGPU = 1;
-const int team_size = 1000;
 
 // Prints out the Pokemon and its stats
 void displayPoke(int* P) {
@@ -28,12 +28,12 @@ void displayPoke(int* P) {
 // Main for parellel pokemon battles
 // TODO
 int main() {
-	std::ofstream nullStream("/dev/null"); // On Windows, use "nul"
-	std::streambuf* oldBuf = std::cout.rdbuf();
-	std::cout.rdbuf(nullStream.rdbuf());
+	//std::ofstream nullStream("/dev/null"); // On Windows, use "nul"
+	//std::streambuf* oldBuf = std::cout.rdbuf();
+	//std::cout.rdbuf(nullStream.rdbuf());
 
 	// Printing for Output file
-	std::ofstream outFile("results.txt", std::ios::app);
+	std::ofstream outFile("C:/Users/mag6814/Source/Repos/kin8564/Cudamon/results.txt", std::ios::app);
 	if (!outFile) {
 		std::cerr << "Error opening file for writing!" << std::endl;
 		return 1;
@@ -50,6 +50,7 @@ int main() {
 
 	Pokemon Venusaur = pokedex.pokedex[3];
 	Pokemon Charizard = pokedex.pokedex[6];
+	Pokemon Blastoise = pokedex.pokedex[9];
 
 	Pokemon Charmander = pokedex.pokedex[4];
 	Pokemon Squirtle = pokedex.pokedex[7];
@@ -61,7 +62,7 @@ int main() {
 
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		team1[i] = Charizard;
-		team2[i] = Venusaur;
+		team2[i] = Blastoise;
 	}
 
 	// Initialize trainer teams
@@ -72,7 +73,7 @@ int main() {
 	int* turn_results = new int[MAX_POKEMON];
 
 	// Initialization
-	for (int i = 0; i < team_size; i++) {
+	for (int i = 0; i < MAX_POKEMON; i++) {
 		// Player 1 (Charmander)
 		h_p1->healthPoints[i] = Charizard.healthPoints;
 		h_p1->attack[i] = Charizard.attack;
@@ -107,37 +108,37 @@ int main() {
 		h_p1->statEva[i][1] = Charizard.statEva[1];
 
 		// Player 2 (Squirtle)
-		h_p2->healthPoints[i] = Venusaur.healthPoints;
-		h_p2->attack[i] = Venusaur.attack;
-		h_p2->defense[i] = Venusaur.defense;
-		h_p2->specialAttack[i] = Venusaur.specialAttack;
-		h_p2->specialDefense[i] = Venusaur.specialDefense;
-		h_p2->speed[i] = Venusaur.speed;
-		h_p2->accuracy[i] = Venusaur.pokeacc;
-		h_p2->evasion[i] = Venusaur.evasion;
-		h_p2->type1[i] = Venusaur.type1;
-		h_p2->type2[i] = Venusaur.type2;
-		h_p2->nature[i] = Venusaur.weirdo;
+		h_p2->healthPoints[i] = Blastoise.healthPoints;
+		h_p2->attack[i] = Blastoise.attack;
+		h_p2->defense[i] = Blastoise.defense;
+		h_p2->specialAttack[i] = Blastoise.specialAttack;
+		h_p2->specialDefense[i] = Blastoise.specialDefense;
+		h_p2->speed[i] = Blastoise.speed;
+		h_p2->accuracy[i] = Blastoise.pokeacc;
+		h_p2->evasion[i] = Blastoise.evasion;
+		h_p2->type1[i] = Blastoise.type1;
+		h_p2->type2[i] = Blastoise.type2;
+		h_p2->nature[i] = Blastoise.weirdo;
 
 		for (int j = 0; j < 4; j++) {
-			h_p2->moves[i][j] = Venusaur.moves[j];
+			h_p2->moves[i][j] = Blastoise.moves[j];
 		}
 
-		h_p2->statAtk[i][0] = Venusaur.statAtk[0];
-		h_p2->statAtk[i][1] = Venusaur.statAtk[1];
-		h_p2->statDef[i][0] = Venusaur.statDef[0];
-		h_p2->statDef[i][1] = Venusaur.statDef[1];
-		h_p2->statSpa[i][0] = Venusaur.statSpa[0];
-		h_p2->statSpa[i][1] = Venusaur.statSpa[1];
-		h_p2->statSpd[i][0] = Venusaur.statSpd[0];
-		h_p2->statSpd[i][1] = Venusaur.statSpd[1];
-		h_p2->statSpe[i][0] = Venusaur.statSpe[0];
-		h_p2->statSpe[i][1] = Venusaur.statSpe[1];
+		h_p2->statAtk[i][0] = Blastoise.statAtk[0];
+		h_p2->statAtk[i][1] = Blastoise.statAtk[1];
+		h_p2->statDef[i][0] = Blastoise.statDef[0];
+		h_p2->statDef[i][1] = Blastoise.statDef[1];
+		h_p2->statSpa[i][0] = Blastoise.statSpa[0];
+		h_p2->statSpa[i][1] = Blastoise.statSpa[1];
+		h_p2->statSpd[i][0] = Blastoise.statSpd[0];
+		h_p2->statSpd[i][1] = Blastoise.statSpd[1];
+		h_p2->statSpe[i][0] = Blastoise.statSpe[0];
+		h_p2->statSpe[i][1] = Blastoise.statSpe[1];
 
-		h_p2->statAcc[i][0] = Venusaur.statAcc[0];
-		h_p2->statAcc[i][1] = Venusaur.statAcc[1];
-		h_p2->statEva[i][0] = Venusaur.statEva[0];
-		h_p2->statEva[i][1] = Venusaur.statEva[1];
+		h_p2->statAcc[i][0] = Blastoise.statAcc[0];
+		h_p2->statAcc[i][1] = Blastoise.statAcc[1];
+		h_p2->statEva[i][0] = Blastoise.statEva[0];
+		h_p2->statEva[i][1] = Blastoise.statEva[1];
 	}
 
 	// Run battles in series
@@ -147,15 +148,12 @@ int main() {
 	}
 	end = clock();
 	tcpu = (float)(end - start) * 1000 / (float)CLOCKS_PER_SEC / ITERS;
-	std::cout.rdbuf(oldBuf);
-
-	printf("Finished CPU");
 
 	std::random_device rd;
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<> dist(0, 100);
 
-	int seed = rng() % 100;
+	int seed = rng() % 10000;
 
 	bool success = pokeBattleGPUNew(h_p1, h_p2, h_results, turn_results, MAX_POKEMON, seed);
 	if (!success) {
@@ -170,40 +168,55 @@ int main() {
 	}
 	end = clock();
 	tgpu = (float)(end - start) * 1000 / (float)CLOCKS_PER_SEC / ITERS;
+	//std::cout.rdbuf(oldBuf);
 
 	float speedup = tcpu / tgpu;
+	// CPU results
+	int cpuwin = 0;
+	for (int i = 0; i < MAX_POKEMON; i++) {
+		//printf("Winner CPU %s\n", winner[i].Pokename);
+		if (std::strcmp(winner[i].Pokename, Blastoise.getPokeName()) == 0) {
+			cpuwin++;
+		}
+	}
+	
+	// GPU results
+	int gpuwin = 0;
+	for (int i = 0; i < MAX_POKEMON; i++) {
+		if (h_results[i] == 1) {
+			gpuwin++;
+		}
+	}
+
+	double win = (static_cast<double>(gpuwin) / MAX_POKEMON) * 100;
+
+	int avg = 0;
+	for (int i = 0; i < MAX_POKEMON; i++) {
+		avg += turn_results[i];
+	}
+	avg /= MAX_POKEMON;
+
 	printf("CPU time: %e\n", tcpu);
 	printf("GPU time: %e\n", tgpu);
 	printf("Speedup: %e\n", speedup);
-	// CPU results
-	int poke1 = 0;
-	for (int i = 0; i < MAX_POKEMON; i++) {
-		//printf("Winner CPU %s\n", winner[i].Pokename);
-		if (std::strcmp(winner[i].Pokename, "Venusaur") == 0) {
-			poke1++;
-		}
-	}
-	std::cout << "Venusaur Win CPU " << poke1 << std::endl;
-	
-	// GPU results
-	int venuwin = 0;
-	for (int i = 0; i < MAX_POKEMON; i++) {
-		if (h_results[i] == 1) {
-			venuwin++;
-		}
-	}
-	std::cout << "Charizard Win " << venuwin << std::endl;
+	printf("Win Percentage of %s: %f\n", Charizard.getPokeName(), win);
+	printf("Average number of turns: %d", avg);
 
-	//for (int i = 0; i < team_size; ++i) {
-	//	std::cout << "Battle " << i + 1 << " result: Winner = Pokémon " << h_results[i] << std::endl;
-	//}
+	/*outFile << "Pokemon Size: " << MAX_POKEMON << "\n";
+	outFile << "CPU time: " << tcpu << " ms\n";
+	outFile << "GPU time: " << tgpu << " ms\n";
+	outFile << "Speedup: " << speedup << "\n";
+	outFile << std::scientific;
+	outFile << std::fixed << std::setprecision(2);
+	outFile << "Win Percentage of" << " Charizard: " << win << " %\n " << std::endl;
+	outFile.close();*/
 
-	//printf("Done again");
 	delete[] team1;
 	delete[] team2;
 	delete[] winner;
 	delete[] h_p1;
 	delete[] h_p2;
 	delete[] h_results;
+	delete[] turn_results;
 	return 0;
 } // main

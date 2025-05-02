@@ -558,7 +558,7 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
 
     // Determine if the move hits its target
     if (!targetHit(attacker, defender, move)) {
-        std::cout << "The attack missed!" << std::endl;
+        ////std::cout << "The attack missed!" << std::endl;
     } else {
 
         // Physical or special attack calculation
@@ -576,7 +576,7 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
         critCalc = std::rand() % 256;
         if (critCalc < (attacker.getSpe() / 2)) {
             critCalc = 1.5;
-            std::cout << "It's a critical hit!" << std::endl;
+            ////std::cout << "It's a critical hit!" << std::endl;
         }
         else {
             critCalc = 1.0;
@@ -600,18 +600,18 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
 
         // Determine effectiveness
         if (dmgArray[1] == 1) {
-            std::cout << "It's super effective!" << std::endl;
+            //std::cout << "It's super effective!" << std::endl;
         }
         else if (dmgArray[2] == 1) {
-            std::cout << "It's not very effective..." << std::endl;
+            //std::cout << "It's not very effective..." << std::endl;
         }
         else if (dmgArray[3] == 1) {
-            std::cout << "It doesn't affect " << defender.getPokeName() << "..." << std::endl;
+            //std::cout << "It doesn't affect " << defender.getPokeName() << "..." << std::endl;
         }
 
         // Apply damage to defender's HP
         defender.setHP(defender.getHP() - baseDamage);
-        std::cout << baseDamage << " damage!" << std::endl;
+        //std::cout << baseDamage << " damage!" << std::endl;
     }
 }
 
@@ -629,7 +629,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newAtk = static_cast<int>(mult * attacker.getAtk());
             attacker.setAtk(newAtk);
-            std::cout << attacker.getPokeName() << "'s attack rose!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s attack rose!" << std::endl;
         }
         if (effect[1] < 0) { // Drop attack
             multStage = effect[1];
@@ -638,7 +638,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newAtk = static_cast<int>(mult * attacker.getAtk());
             attacker.setAtk(newAtk);
-            std::cout << attacker.getPokeName() << "'s attack fell!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s attack fell!" << std::endl;
         }
         if (effect[2] > 0) { // Raise defense
             multStage = effect[2];
@@ -647,7 +647,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newDef = static_cast<int>(mult * attacker.getDef());
             attacker.setDef(newDef);
-            std::cout << attacker.getPokeName() << "'s defense rose!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s defense rose!" << std::endl;
         }
         if (effect[2] < 0) { // Drop defense
             multStage = effect[2];
@@ -656,7 +656,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newDef = static_cast<int>(mult * attacker.getDef());
             attacker.setDef(newDef);
-            std::cout << attacker.getPokeName() << "'s defense fell!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s defense fell!" << std::endl;
         }
         if (effect[3] > 0) { // Raise special attack
             multStage = effect[3];
@@ -665,7 +665,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpa = static_cast<int>(mult * attacker.getSpa());
             attacker.setSpa(newSpa);
-            std::cout << attacker.getPokeName() << "'s special attack rose!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s special attack rose!" << std::endl;
         }
         if (effect[3] < 0) { // Drop special attack
             multStage = effect[3];
@@ -674,7 +674,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpa = static_cast<int>(mult * attacker.getSpa());
             attacker.setSpa(newSpa);
-            std::cout << attacker.getPokeName() << "'s special attack fell!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s special attack fell!" << std::endl;
         }
         if (effect[4] > 0) { // Raise special defense
             multStage = effect[4];
@@ -683,7 +683,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpd = static_cast<int>(mult * attacker.getSpd());
             attacker.setSpd(newSpd);
-            std::cout << attacker.getPokeName() << "'s special defense rose!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s special defense rose!" << std::endl;
         }
         if (effect[4] > 0) { // Drop special defense
             multStage = effect[4];
@@ -692,7 +692,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpd = static_cast<int>(mult * attacker.getSpd());
             attacker.setSpd(newSpd);
-            std::cout << attacker.getPokeName() << "'s special defense fell!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s special defense fell!" << std::endl;
         }
         if (effect[5] > 0) { // Raise speed
             multStage = effect[5];
@@ -701,7 +701,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpe = static_cast<int>(mult * attacker.getSpe());
             attacker.setSpe(newSpe);
-            std::cout << attacker.getPokeName() << "'s speed rose!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s speed rose!" << std::endl;
         }
         if (effect[5] < 0) { // Drop speed
             multStage = effect[5];
@@ -710,17 +710,17 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpe = static_cast<int>(mult * attacker.getSpe());
             attacker.setSpe(newSpe);
-            std::cout << attacker.getPokeName() << "'s speed fell!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s speed fell!" << std::endl;
         }
         if (effect[6] > 0) { // Buff accuracy
 			multStage = effect[6];
 			attacker.setAccStage(multStage);
-            std::cout << attacker.getPokeName() << "'s accuracy rose!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s accuracy rose!" << std::endl;
         }
         if (effect[7] > 0) { // Buff evasion
 			multStage = effect[7];
 			attacker.setEvaStage(multStage);
-            std::cout << attacker.getPokeName() << "'s evasion rose!" << std::endl;
+            //std::cout << attacker.getPokeName() << "'s evasion rose!" << std::endl;
         }
     }
     else if (effect[0] == 1) { // Changing opponent
@@ -731,7 +731,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newAtk = static_cast<int>(mult * defender.getAtk());
             defender.setAtk(newAtk);
-            std::cout << defender.getPokeName() << "'s attack fell!" << std::endl;
+            //std::cout << defender.getPokeName() << "'s attack fell!" << std::endl;
         }
         if (effect[2] < 0) { // Drop defense
             multStage = effect[2];
@@ -740,7 +740,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newDef = static_cast<int>(mult * defender.getDef());
             defender.setDef(newDef);
-            std::cout << defender.getPokeName() << "'s defense fell!" << std::endl;
+            //std::cout << defender.getPokeName() << "'s defense fell!" << std::endl;
         }
         if (effect[3] < 0) { // Drop special attack
             multStage = effect[3];
@@ -749,7 +749,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpa = static_cast<int>(mult * defender.getSpa());
             defender.setSpa(newSpa);
-            std::cout << defender.getPokeName() << "'s special attack fell!" << std::endl;
+            //std::cout << defender.getPokeName() << "'s special attack fell!" << std::endl;
         }
         if (effect[4] < 0) { // Drop special defense
             multStage = effect[4];
@@ -758,7 +758,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpd = static_cast<int>(mult * defender.getSpd());
             defender.setSpd(newSpd);
-            std::cout << defender.getPokeName() << "'s special defense fell!" << std::endl;
+            //std::cout << defender.getPokeName() << "'s special defense fell!" << std::endl;
         }
         if (effect[5] < 0) { // Drop speed
             multStage = effect[5];
@@ -767,17 +767,17 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             mult = statMultiplier.at(multStage);
             int newSpe = static_cast<int>(mult * defender.getSpe());
             defender.setSpe(newSpe);
-            std::cout << defender.getPokeName() << "'s speed fell!" << std::endl;
+            //std::cout << defender.getPokeName() << "'s speed fell!" << std::endl;
         }
         if (effect[6] < 0) { // Drop accuracy
 			multStage = effect[6];
 			defender.setAccStage(multStage);
-            std::cout << defender.getPokeName() << "'s accuracy fell!" << std::endl;
+            //std::cout << defender.getPokeName() << "'s accuracy fell!" << std::endl;
         }
         if (effect[7] < 0) { // Drop evasion
 			multStage = effect[7];
 			defender.setEvaStage(multStage);
-            std::cout << defender.getPokeName() << "'s evasion fell!" << std::endl;
+            //std::cout << defender.getPokeName() << "'s evasion fell!" << std::endl;
         }
     }
 }
@@ -808,7 +808,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 while (!canUse) {   // Check if move can be used
                     selected = poketeam1[i].getMove(rng() % poketeam1[i].getMovesNum());
                     if (selected.getPP() < 1) {
-                        std::cout << selected.getName() << " is out of PP!" << std::endl;
+                        //std::cout << selected.getName() << " is out of PP!" << std::endl;
                     }
                     else {
                         selected.useMove();
@@ -817,7 +817,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 }
                 canUse--;
 
-                std::cout << poketeam1[i].getPokeName() << " used " << selected.getName() << std::endl;
+                //std::cout << poketeam1[i].getPokeName() << " used " << selected.getName() << std::endl;
 
                 if (selected.getCat() == 3) {   // Check if move is a status move or an attack
                     statusCalc(poketeam1[i], poketeam2[i], selected);
@@ -825,7 +825,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 else {
                     damageCalc(poketeam1[i], poketeam2[i], selected);
                 }
-                std::cout << std::endl;
+                //std::cout << std::endl;
 
                 if (poketeam2[i].getHP() < 1) break;
 
@@ -834,7 +834,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 while (!canUse) {
                     selected = poketeam2[i].getMove(rng() % poketeam2[i].getMovesNum());
                     if (selected.getPP() < 1) {
-                        std::cout << selected.getName() << " is out of PP!" << std::endl;
+                        //std::cout << selected.getName() << " is out of PP!" << std::endl;
                     }
                     else {
                         selected.useMove();
@@ -843,7 +843,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 }
                 canUse--;
 
-                std::cout << poketeam2[i].getPokeName() << " used " << selected.getName() << std::endl;
+                //std::cout << poketeam2[i].getPokeName() << " used " << selected.getName() << std::endl;
 
                 if (selected.getCat() == 3) {
                     statusCalc(poketeam2[i], poketeam1[i], selected);
@@ -851,7 +851,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 else {
                     damageCalc(poketeam2[i], poketeam1[i], selected);
                 }
-                std::cout << std::endl;
+                //std::cout << std::endl;
 
             }
             else {
@@ -860,7 +860,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 while (!canUse) {
                     selected = poketeam2[i].getMove(rng() % poketeam2[i].getMovesNum());
                     if (selected.getPP() < 1) {
-                        std::cout << selected.getName() << " is out of PP!" << std::endl;
+                        //std::cout << selected.getName() << " is out of PP!" << std::endl;
                     }
                     else {
                         selected.useMove();
@@ -869,7 +869,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 }
                 canUse--;
 
-                std::cout << poketeam2[i].getPokeName() << " used " << selected.getName() << std::endl;
+                //std::cout << poketeam2[i].getPokeName() << " used " << selected.getName() << std::endl;
 
                 if (selected.getCat() == 3) {
                     statusCalc(poketeam2[i], poketeam1[i], selected);
@@ -877,7 +877,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 else {
                     damageCalc(poketeam2[i], poketeam1[i], selected);
                 }
-                std::cout << std::endl;
+                //std::cout << std::endl;
 
                 if (poketeam1[i].getHP() < 1) break;
 
@@ -885,7 +885,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 while (!canUse) {   // Check if move can be used
                     selected = poketeam1[i].getMove(rng() % poketeam1[i].getMovesNum());
                     if (selected.getPP() < 1) {
-                        std::cout << selected.getName() << " is out of PP!" << std::endl;
+                        //std::cout << selected.getName() << " is out of PP!" << std::endl;
                     }
                     else {
                         selected.useMove();
@@ -894,7 +894,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 }
                 canUse--;
 
-                std::cout << poketeam1[i].getPokeName() << " used " << selected.getName() << std::endl;
+                //std::cout << poketeam1[i].getPokeName() << " used " << selected.getName() << std::endl;
 
                 if (selected.getCat() == 3) {
                     statusCalc(poketeam1[i], poketeam2[i], selected);
@@ -902,11 +902,11 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
                 else {
                     damageCalc(poketeam1[i], poketeam2[i], selected);
                 }
-                std::cout << std::endl;
+                //std::cout << std::endl;
             }
         }
 
-        printf("%d turns\n", turn);
+        //printf("%d turns\n", turn);
         if (poketeam2[i].getHP() < 1) {
             winner[i] = poketeam1[i];
         }
