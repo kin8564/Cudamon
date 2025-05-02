@@ -1061,6 +1061,7 @@ bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBatt
     cudaMemcpy(d_p1, p1, sizeof(PokemonData), cudaMemcpyHostToDevice);
     cudaMemcpy(d_p2, p2, sizeof(PokemonData), cudaMemcpyHostToDevice);
 
+
     dim3 blockSize(TILE_SIZE);
     dim3 gridSize((numBattles + TILE_SIZE - 1) / TILE_SIZE);
 
