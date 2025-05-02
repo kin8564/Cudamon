@@ -31,6 +31,7 @@ void pokeBattleCPU(Pokemon* poketeam1, Pokemon* poketeam2, Pokemon* winner, int 
  */
 bool pokeBattleGPU(Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* results, int NUM_POKEMON);
 
-bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBattles, int seed);
+bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int* turns, int numBattles, int seed);
+
 
 #endif

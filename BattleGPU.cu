@@ -836,11 +836,13 @@ __device__ void statusCalcGPU(
     }
 }
 
-__device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int idx, curandState* rng) {
+__device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int* turns, int idx, curandState* rng) {
+    int d_turns = 0;
     int canUse = 0;
     while (p1->healthPoints[idx] > 0 && p2->healthPoints[idx] > 0) {
         Move selected = p1->moves[0][0]; //placeholder for initialization
         if (p1->speed[idx] > p2->speed[idx]) {
+            d_turns++;
             while (!canUse) {
                 selected = p1->moves[idx][curand(rng) % 4];
                 if (selected.pp < 1) {
@@ -931,6 +933,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
 
         }
         else {
+            d_turns++;
             while (!canUse) {
                 selected = p2->moves[idx][curand(rng) % 4];
                 if (selected.pp < 1) {
@@ -1022,6 +1025,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
         }
     }
 
+    turns[idx] = d_turns;
     // Write the result to the result array
     if (p2->healthPoints[idx] < 1) {
         result[idx] = 1;
@@ -1031,23 +1035,25 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
     }
 }
 
-__global__ void battleKernel(PokemonData* p1, PokemonData* p2, int* result, int numBattles, int seed) {
+__global__ void battleKernel(PokemonData* p1, PokemonData* p2, int* result, int* turns, int numBattles, int seed) {
     int idx = threadIdx.x + blockIdx.x * blockDim.x;
     if (idx < numBattles) {
         curandState rng;
         curand_init(seed, idx, 0, &rng);
-        battleGPUNew(p1, p2, result, idx, &rng);  // Pass pointers
+        battleGPUNew(p1, p2, result, turns, idx, &rng);  // Pass pointers
     }
 }
 
-bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBattles,int seed) {
+bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int* turns, int numBattles,int seed) {
     PokemonData* d_p1;
     PokemonData* d_p2;
     int* d_result;
+    int* d_turns;
 
     cudaMalloc((void**)&d_p1, sizeof(PokemonData));
     cudaMalloc((void**)&d_p2, sizeof(PokemonData));
     cudaMalloc((void**)&d_result, sizeof(int) * numBattles);
+    cudaMalloc((void**)&d_turns, sizeof(int) * numBattles);
 
     // Copy host PokemonData (single structs, each holding SoA arrays)
     cudaMemcpy(d_p1, p1, sizeof(PokemonData), cudaMemcpyHostToDevice);
@@ -1058,7 +1064,7 @@ bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBatt
     dim3 gridSize((numBattles + TILE_SIZE - 1) / TILE_SIZE);
 
     // Launch the kernel
-    battleKernel << <gridSize, blockSize >> > (d_p1, d_p2, d_result, numBattles, seed);
+    battleKernel << <gridSize, blockSize >> > (d_p1, d_p2, d_result, d_turns, numBattles, seed);
     cudaDeviceSynchronize();
 
     // Check for errors

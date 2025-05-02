@@ -794,14 +794,16 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
     std::random_device rd;
     std::mt19937 rng(rd());
     std::uniform_int_distribution<> dist(0, 100);
-    int turn = 0;
+    int turn;
 
     for (int i = 0; i < teamsize; i++) {
+        turn = 0;
         // Until KO
         while (poketeam1[i].getHP() >= 1 && poketeam2[i].getHP() >= 1) {
             Move selected;
             int canUse = 0;
             if (poketeam1[i].getSpe() > poketeam2[i].getSpe()) {
+                turn++;
                 // Friend attacks first
                 while (!canUse) {   // Check if move can be used
                     selected = poketeam1[i].getMove(rng() % poketeam1[i].getMovesNum());
@@ -853,6 +855,7 @@ void pokeBattleCPU(Pokemon poketeam1[], Pokemon poketeam2[], Pokemon winner[], i
 
             }
             else {
+                turn++;
                 // Foe attacks first
                 while (!canUse) {
                     selected = poketeam2[i].getMove(rng() % poketeam2[i].getMovesNum());

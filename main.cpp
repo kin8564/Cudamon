@@ -69,6 +69,7 @@ int main() {
 	PokemonData* h_p1 = new PokemonData;
 	PokemonData* h_p2 = new PokemonData;
 	int* h_results = new int[MAX_POKEMON];
+	int* turn_results = new int[MAX_POKEMON];
 
 	// Initialization
 	for (int i = 0; i < team_size; i++) {
@@ -156,7 +157,7 @@ int main() {
 
 	int seed = rng() % 100;
 
-	bool success = pokeBattleGPUNew(h_p1, h_p2, h_results, MAX_POKEMON, seed);
+	bool success = pokeBattleGPUNew(h_p1, h_p2, h_results, turn_results, MAX_POKEMON, seed);
 	if (!success) {
 		std::cout << "\n * Device error! * \n" << std::endl;
 		return 1;
@@ -165,7 +166,7 @@ int main() {
 	// Run battles in parallel
 	start = clock();
 	for (int i = 0; i < ITERSGPU; i++) {
-		pokeBattleGPUNew(h_p1, h_p2, h_results, MAX_POKEMON, seed);
+		pokeBattleGPUNew(h_p1, h_p2, h_results, turn_results, MAX_POKEMON, seed);
 	}
 	end = clock();
 	tgpu = (float)(end - start) * 1000 / (float)CLOCKS_PER_SEC / ITERS;
