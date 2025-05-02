@@ -624,13 +624,13 @@ static void damageCalc(Pokemon& attacker, Pokemon& defender, Move move) {
 }
 
 void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
-    // {buff/debuff, atk, def, spa, spd, spe, acc, eva}
+    // {Self/enemy, atk, def, spa, spd, spe, acc, eva}
     int* effect = move.statEffect;
     double mult;
     int multStage;
 
-    if (effect[0] == 0) { // If buffing self
-        if (effect[1] != 0) { // Buff attack
+    if (effect[0] == 0) { // If changing self
+        if (effect[1] > 0) { // Raise attack
             multStage = effect[1];
             attacker.setAtkStage(multStage);
             multStage = attacker.getAtkStage();
@@ -639,7 +639,16 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             attacker.setAtk(newAtk);
             std::cout << attacker.getPokeName() << "'s attack rose!" << std::endl;
         }
-        if (effect[2] != 0) { // Buff defense
+        if (effect[1] < 0) { // Drop attack
+            multStage = effect[1];
+            attacker.setAtkStage(multStage);
+            multStage = attacker.getAtkStage();
+            mult = statMultiplier.at(multStage);
+            int newAtk = static_cast<int>(mult * attacker.getAtk());
+            attacker.setAtk(newAtk);
+            std::cout << attacker.getPokeName() << "'s attack fell!" << std::endl;
+        }
+        if (effect[2] > 0) { // Raise defense
             multStage = effect[2];
             attacker.setDefStage(multStage);
             multStage = attacker.getDefStage();
@@ -648,7 +657,16 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             attacker.setDef(newDef);
             std::cout << attacker.getPokeName() << "'s defense rose!" << std::endl;
         }
-        if (effect[3] != 0) { // Buff special attack
+        if (effect[2] < 0) { // Drop defense
+            multStage = effect[2];
+            attacker.setDefStage(multStage);
+            multStage = attacker.getDefStage();
+            mult = statMultiplier.at(multStage);
+            int newDef = static_cast<int>(mult * attacker.getDef());
+            attacker.setDef(newDef);
+            std::cout << attacker.getPokeName() << "'s defense fell!" << std::endl;
+        }
+        if (effect[3] > 0) { // Raise special attack
             multStage = effect[3];
             attacker.setSpaStage(multStage);
             multStage = attacker.getSpaStage();
@@ -657,7 +675,16 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             attacker.setSpa(newSpa);
             std::cout << attacker.getPokeName() << "'s special attack rose!" << std::endl;
         }
-        if (effect[4] != 0) { // Buff special defense
+        if (effect[3] < 0) { // Drop special attack
+            multStage = effect[3];
+            attacker.setSpaStage(multStage);
+            multStage = attacker.getSpaStage();
+            mult = statMultiplier.at(multStage);
+            int newSpa = static_cast<int>(mult * attacker.getSpa());
+            attacker.setSpa(newSpa);
+            std::cout << attacker.getPokeName() << "'s special attack fell!" << std::endl;
+        }
+        if (effect[4] > 0) { // Raise special defense
             multStage = effect[4];
             attacker.setSpdStage(multStage);
             multStage = attacker.getSpdStage();
@@ -666,7 +693,16 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             attacker.setSpd(newSpd);
             std::cout << attacker.getPokeName() << "'s special defense rose!" << std::endl;
         }
-        if (effect[5] != 0) { // Buff speed
+        if (effect[4] > 0) { // Drop special defense
+            multStage = effect[4];
+            attacker.setSpdStage(multStage);
+            multStage = attacker.getSpdStage();
+            mult = statMultiplier.at(multStage);
+            int newSpd = static_cast<int>(mult * attacker.getSpd());
+            attacker.setSpd(newSpd);
+            std::cout << attacker.getPokeName() << "'s special defense fell!" << std::endl;
+        }
+        if (effect[5] > 0) { // Raise speed
             multStage = effect[5];
             attacker.setSpeStage(multStage);
             multStage = attacker.getSpeStage();
@@ -675,27 +711,28 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             attacker.setSpe(newSpe);
             std::cout << attacker.getPokeName() << "'s speed rose!" << std::endl;
         }
-        if (effect[6] != 0) { // Buff accuracy
+        if (effect[5] < 0) { // Drop speed
+            multStage = effect[5];
+            attacker.setSpeStage(multStage);
+            multStage = attacker.getSpeStage();
+            mult = statMultiplier.at(multStage);
+            int newSpe = static_cast<int>(mult * attacker.getSpe());
+            attacker.setSpe(newSpe);
+            std::cout << attacker.getPokeName() << "'s speed fell!" << std::endl;
+        }
+        if (effect[6] > 0) { // Buff accuracy
 			multStage = effect[6];
 			attacker.setAccStage(multStage);
-			/*multStage = attacker.getAccStage();
-			mult = accMultiplier[multStage];
-			int newAcc = static_cast<int>(mult * attacker.getAcc());
-			attacker.setAcc(newAcc);*/
             std::cout << attacker.getPokeName() << "'s accuracy rose!" << std::endl;
         }
-        if (effect[7] != 0) { // Buff evasion
+        if (effect[7] > 0) { // Buff evasion
 			multStage = effect[7];
 			attacker.setEvaStage(multStage);
-			/*multStage = attacker.getEvaStage();
-			mult = evaMultiplier[multStage];
-			int newEva = static_cast<int>(mult * attacker.getEva());
-			attacker.setEva(newEva);*/
             std::cout << attacker.getPokeName() << "'s evasion rose!" << std::endl;
         }
     }
-    else if (effect[0] == 1) { // Debuffing opponent
-        if (effect[1] != 0) { // Debuff attack
+    else if (effect[0] == 1) { // Changing opponent
+        if (effect[1] < 0) { // Drop attack
             multStage = effect[1];
             defender.setAtkStage(multStage);
             multStage = defender.getAtkStage();
@@ -704,7 +741,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             defender.setAtk(newAtk);
             std::cout << defender.getPokeName() << "'s attack fell!" << std::endl;
         }
-        if (effect[2] != 0) { // Debuff defense
+        if (effect[2] < 0) { // Drop defense
             multStage = effect[2];
             defender.setDefStage(multStage);
             multStage = defender.getDefStage();
@@ -713,7 +750,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             defender.setDef(newDef);
             std::cout << defender.getPokeName() << "'s defense fell!" << std::endl;
         }
-        if (effect[3] != 0) { // Debuff special attack
+        if (effect[3] < 0) { // Drop special attack
             multStage = effect[3];
             defender.setSpaStage(multStage);
             multStage = defender.getSpaStage();
@@ -722,7 +759,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             defender.setSpa(newSpa);
             std::cout << defender.getPokeName() << "'s special attack fell!" << std::endl;
         }
-        if (effect[4] != 0) { // Debuff special defense
+        if (effect[4] < 0) { // Drop special defense
             multStage = effect[4];
             defender.setSpdStage(multStage);
             multStage = defender.getSpdStage();
@@ -731,7 +768,7 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             defender.setSpd(newSpd);
             std::cout << defender.getPokeName() << "'s special defense fell!" << std::endl;
         }
-        if (effect[5] != 0) { // Debuff speed
+        if (effect[5] < 0) { // Drop speed
             multStage = effect[5];
             defender.setSpeStage(multStage);
             multStage = defender.getSpeStage();
@@ -740,22 +777,14 @@ void statusCalc(Pokemon& attacker, Pokemon& defender, Move move) {
             defender.setSpe(newSpe);
             std::cout << defender.getPokeName() << "'s speed fell!" << std::endl;
         }
-        if (effect[6] != 0) { // Debuff accuracy
+        if (effect[6] < 0) { // Drop accuracy
 			multStage = effect[6];
 			defender.setAccStage(multStage);
-			/*multStage = defender.getAccStage();
-			mult = accMultiplier[multStage];
-			int newAcc = static_cast<int>(mult * defender.getAcc());
-			defender.setAcc(newAcc);*/
             std::cout << defender.getPokeName() << "'s accuracy fell!" << std::endl;
         }
-        if (effect[7] != 0) { // Debuff evasion
+        if (effect[7] < 0) { // Drop evasion
 			multStage = effect[7];
 			defender.setEvaStage(multStage);
-			/*multStage = defender.getEvaStage();
-			mult = evaMultiplier[multStage];
-			int newEva = static_cast<int>(mult * defender.getEva());
-			defender.setEva(newEva);*/
             std::cout << defender.getPokeName() << "'s evasion fell!" << std::endl;
         }
     }

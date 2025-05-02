@@ -18,6 +18,7 @@
 
 const int ITERS = 1;
 const int ITERSGPU = 1;
+const int team_size = 1000;
 
 // Prints out the Pokemon and its stats
 void displayPoke(int* P) {
@@ -70,19 +71,19 @@ int main() {
 	int* h_results = new int[MAX_POKEMON];
 
 	// Initialization
-	for (int i = 0; i < MAX_POKEMON; i++) {
-		// Player 1 (Charmander)
-		h_p1->healthPoints[i] = Charmander.healthPoints;
-		h_p1->attack[i] = Charmander.attack;
-		h_p1->defense[i] = Charmander.defense;
-		h_p1->specialAttack[i] = Charmander.specialAttack;
-		h_p1->specialDefense[i] = Charmander.specialDefense;
-		h_p1->speed[i] = Charmander.speed;
-		h_p1->accuracy[i] = Charmander.pokeacc;
-		h_p1->evasion[i] = Charmander.evasion;
-		h_p1->type1[i] = Charmander.type1;
-		h_p1->type2[i] = Charmander.type2;
-		h_p1->nature[i] = Charmander.weirdo;
+	for (int i = 0; i < team_size; i++) {
+		// Player 1 (Venusaur)
+		h_p1->healthPoints[i] = Venusaur.healthPoints;
+		h_p1->attack[i] = Venusaur.attack;
+		h_p1->defense[i] = Venusaur.defense;
+		h_p1->specialAttack[i] = Venusaur.specialAttack;
+		h_p1->specialDefense[i] = Venusaur.specialDefense;
+		h_p1->speed[i] = Venusaur.speed;
+		h_p1->accuracy[i] = Venusaur.pokeacc;
+		h_p1->evasion[i] = Venusaur.evasion;
+		h_p1->type1[i] = Venusaur.type1;
+		h_p1->type2[i] = Venusaur.type2;
+		h_p1->nature[i] = Venusaur.weirdo;
 
 		for (int j = 0; j < 4; j++) {
 			h_p1->moves[i][j] = Charmander.moves[j];
