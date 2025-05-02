@@ -549,7 +549,7 @@ __device__ int getRandom(curandState* state) {
 __device__ static int targetHitGPU(int attackerAccST, int defenderEvaST, Move move, curandState* rng) {
     int accMove = move.accuracy;
 
-    int stage = static_cast<int>(defenderEvaST) - (attackerAccST);
+    int stage = static_cast<int>(attackerAccST) - (defenderEvaST);
     if (stage > 6) stage = 6;
     else if (stage < -6) stage = -6;
     double stageMultiplier = accMultiplierGPU[stage];
@@ -619,6 +619,7 @@ __device__ void damageCalcGPU(
     int dmgArray[4] = {};
     typeMultiplierGPU(baseDamage, move, defenderType1, defenderType2, dmgArray);
     baseDamage = dmgArray[0];
+    if (baseDamage < 1) baseDamage = 1;
 
     // Inflict damage
     defenderHP -= baseDamage;
@@ -844,12 +845,23 @@ __device__ void statusCalcGPU(
 }
 
 __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int idx, curandState* rng) {
-    int random;
+    int canUse = 0;
     while (p1->healthPoints[idx] > 0 && p2->healthPoints[idx] > 0) {
+        Move selected = p1->moves[0][0]; //placeholder for initialization
         if (p1->speed[idx] > p2->speed[idx]) {
-            random = curand(rng) % 4;
-            Move m1 = p1->moves[idx][random];
-            if (m1.category == 3) {
+            while (!canUse) {
+                selected = p1->moves[idx][curand(rng) % 4];
+                if (selected.pp < 1) {
+                    //do nothing i.e. try for another move
+                }
+                else {
+                    selected.pp -=1;
+                    canUse++;
+                }
+            }
+            canUse--;
+
+            if (selected.category == 3) {
                 statusCalcGPU(
                     p1->statAtk[idx][0], p2->statAtk[idx][0],
                     p1->statDef[idx][0], p2->statDef[idx][0],
@@ -863,7 +875,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p1->statSpa[idx][1], p2->statSpa[idx][1],
                     p1->statSpd[idx][1], p2->statSpd[idx][1],
                     p1->statSpe[idx][1], p2->statSpe[idx][1],
-                    m1
+                    selected
                 );
             }
             else {
@@ -874,16 +886,27 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p1->type1[idx], p1->type2[idx],
                     p2->type1[idx], p2->type2[idx],
                     p2->healthPoints[idx],
-                    m1,
+                    selected,
                     p1->statAcc[idx][0], p2->statEva[idx][0],
                     rng
                 );
             }
 
             if (p2->healthPoints[idx] < 1) break;
-            random = curand(rng) % 4;
-            Move m2 = p2->moves[idx][random];
-            if (m2.category == 3) {
+
+            while (!canUse) {
+                selected = p2->moves[idx][curand(rng) % 4];
+                if (selected.pp < 1) {
+                    //do nothing i.e. try for another move
+                }
+                else {
+                    selected.pp -=1;
+                    canUse++;
+                }
+            }
+            canUse--;
+
+            if (selected.category == 3) {
                 statusCalcGPU(
                     p2->statAtk[idx][0], p1->statAtk[idx][0],
                     p2->statDef[idx][0], p1->statDef[idx][0],
@@ -897,7 +920,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p2->statSpa[idx][1], p1->statSpa[idx][1],
                     p2->statSpd[idx][1], p1->statSpd[idx][1],
                     p2->statSpe[idx][1], p1->statSpe[idx][1],
-                    m2
+                    selected
                 );
             }
             else {
@@ -908,7 +931,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p2->type1[idx], p2->type2[idx],
                     p1->type1[idx], p1->type2[idx],
                     p1->healthPoints[idx],
-                    m2,
+                    selected,
                     p2->statAcc[idx][0], p1->statEva[idx][0],
                     rng
                 );
@@ -916,9 +939,19 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
 
         }
         else {
-            random = curand(rng) % 4;
-            Move m2 = p2->moves[idx][random];
-            if (m2.category == 3) {
+            while (!canUse) {
+                selected = p2->moves[idx][curand(rng) % 4];
+                if (selected.pp < 1) {
+                    //do nothing i.e. try for another move
+                }
+                else {
+                    selected.pp -=1;
+                    canUse++;
+                }
+            }
+            canUse--;
+
+            if (selected.category == 3) {
                 statusCalcGPU(
                     p2->statAtk[idx][0], p1->statAtk[idx][0],
                     p2->statDef[idx][0], p1->statDef[idx][0],
@@ -932,7 +965,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p2->statSpa[idx][1], p1->statSpa[idx][1],
                     p2->statSpd[idx][1], p1->statSpd[idx][1],
                     p2->statSpe[idx][1], p1->statSpe[idx][1],
-                    m2
+                    selected
                 );
             }
             else {
@@ -943,7 +976,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p2->type1[idx], p2->type2[idx],
                     p1->type1[idx], p1->type2[idx],
                     p1->healthPoints[idx],
-                    m2,
+                    selected,
                     p2->statAcc[idx][0], p1->statEva[idx][0],
                     rng
                 );
@@ -951,9 +984,19 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
 
             if (p1->healthPoints[idx] < 1) break;
 
-            random = curand(rng) % 4;
-            Move m1 = p1->moves[idx][random];
-            if (m1.category == 3) {
+            while (!canUse) {
+                selected = p1->moves[idx][curand(rng) % 4];
+                if (selected.pp < 1) {
+                    //do nothing i.e. try for another move
+                }
+                else {
+                    selected.pp -=1;
+                    canUse++;
+                }
+            }
+            canUse--;
+
+            if (selected.category == 3) {
                 statusCalcGPU(
                     p1->statAtk[idx][0], p2->statAtk[idx][0],
                     p1->statDef[idx][0], p2->statDef[idx][0],
@@ -967,7 +1010,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p1->statSpa[idx][1], p2->statSpa[idx][1],
                     p1->statSpd[idx][1], p2->statSpd[idx][1],
                     p1->statSpe[idx][1], p2->statSpe[idx][1],
-                    m1
+                    selected
                 );
             }
             else {
@@ -978,7 +1021,7 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
                     p1->type1[idx], p1->type2[idx],
                     p2->type1[idx], p2->type2[idx],
                     p2->healthPoints[idx],
-                    m1,
+                    selected,
                     p1->statAcc[idx][0], p2->statEva[idx][0],
                     rng
                 );
