@@ -114,32 +114,33 @@ int main() {
 		Pokemon victor;
 		pokeBattleCPU(Charmander, Squirtle, victor);
 
-	bool success = pokeBattleGPUNew(h_p1, h_p2, h_results, team_size);
-	if (!success) {
-		std::cout << "\n * Device error! * \n" << std::endl;
-		return 1;
-	}
-
-	//// Run battles in parallel
-	//for (int i = 0; i < ITERSGPU; i++) {
-	//	pokeBattleGPUNew(h_p1, h_p2, h_results, team_size);
-	//}
-
-	int squirtwin = 0;
-	for (int i = 0; i < team_size; i++) {
-		if (h_results[i] == 2) {
-			squirtwin++;
+		bool success = pokeBattleGPUNew(h_p1, h_p2, h_results, team_size);
+		if (!success) {
+			std::cout << "\n * Device error! * \n" << std::endl;
+			return 1;
 		}
+
+		//// Run battles in parallel
+		//for (int i = 0; i < ITERSGPU; i++) {
+		//	pokeBattleGPUNew(h_p1, h_p2, h_results, team_size);
+		//}
+
+		int squirtwin = 0;
+		for (int i = 0; i < team_size; i++) {
+			if (h_results[i] == 2) {
+				squirtwin++;
+			}
+		}
+		std::cout << "Squirtle Win " << squirtwin << std::endl;
+
+		for (int i = 0; i < team_size; ++i) {
+			std::cout << "Battle " << i + 1 << " result: Winner = Pokémon " << h_results[i] << std::endl;
+		}
+
+		printf("Done again");
+		delete[] h_p1;
+		delete[] h_p2;
+		delete[] h_results;
+		return 0;
 	}
-	std::cout << "Squirtle Win " << squirtwin << std::endl;
-
-	for (int i = 0; i < team_size; ++i) {
-        std::cout << "Battle " << i + 1 << " result: Winner = Pokémon " << h_results[i] << std::endl;
-    }
-
-	printf("Done again");
-	delete[] h_p1;
-	delete[] h_p2;
-	delete[] h_results;
-	return 0;
 } // main

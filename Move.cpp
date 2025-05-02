@@ -13,7 +13,7 @@ Parameters:
 - pw: power of the move
 - acc: accuracy of the move
 - points: max PP of the move
-- statArray: array of effects on stats (buff/debuff, atk, def, spa, spd, spe, acc, eva)
+- statArray: array of effects on stats (self/opponent, atk, def, spa, spd, spe, acc, eva)
 */
 Move::Move(const char* n, TYPES type, int cat, int pw, int acc, int points, int statArray[8])
         : type(type), category(cat), power(pw), accuracy(acc), pp(points) {
