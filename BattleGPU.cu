@@ -1079,6 +1079,7 @@ bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int* turns,
 
     // Copy results back
     cudaMemcpy(result, d_result, sizeof(int) * numBattles, cudaMemcpyDeviceToHost);
+    cudaMemcpy(turns, d_turns, sizeof(int) * numBattles, cudaMemcpyDeviceToHost);
 
     // Print results
 
