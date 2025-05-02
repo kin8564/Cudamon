@@ -81,8 +81,8 @@ void AttackDex::populate() {
 	attackdex["Cross Chop"] = Move("Cross Chop", TYPES::FIGHTING, 1, 100, 80, 5, empty);
 	attackdex["Bullet Punch"] = Move("Bullet Punch", TYPES::STEEL, 1, 40, 100, 20, empty);
 
-	attackdex["Shadow Ball"] = Move("Shadow Ball", TYPES::GHOST, 2, 80, 100, 15);
-	attackdex["Dark Pulse"] = Move("Dark Pulse", TYPES::DARK, 2, 80, 100, 15);
+	attackdex["Shadow Ball"] = Move("Shadow Ball", TYPES::GHOST, 2, 80, 100, 15, empty);
+	attackdex["Dark Pulse"] = Move("Dark Pulse", TYPES::DARK, 2, 80, 100, 15, empty);
 	attackdex["Confusion"] = Move("Confusion", TYPES::PSYCHIC, 2, 50, 100, 25, empty);
 	int scaryFace[8] = { 1, 0, 0, 0, 0, -2, 0, 0 };
 	attackdex["Scary Face"] = Move("Scary Face", TYPES::NORMAL, 3, 0, 100, 10, scaryFace);

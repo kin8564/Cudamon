@@ -37,14 +37,6 @@ static const std::unordered_map<int, double> accMultiplier = {
     {6,  9.0 / 3.0}
 };
 
-//static const std::unordered_map<int, double> evaMultiplier = {
-//    {6,  3.0 / 9.0}, {5,  3.0 / 8.0}, {4,  3.0 / 7.0},
-//    {3,  3.0 / 6.0}, {2,  3.0 / 5.0}, {1,  3.0 / 4.0},
-//    {0,  3.0 / 3.0}, {-1, 4.0 / 3.0}, {-2, 5.0 / 3.0},
-//    {-3, 6.0 / 3.0}, {-4, 7.0 / 3.0}, {-5, 8.0 / 3.0},
-//    {-6, 9.0 / 3.0}
-//};
-
 static std::vector<int> typeMultiplier(int damage, Move move, Pokemon defender) {
     double modifier = 1.0;
     int superEff = 0;
@@ -802,12 +794,14 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
     std::random_device rd;
     std::mt19937 rng(rd());
     std::uniform_int_distribution<> dist(0, 100);
+    int turn = 0;
 
     // Until KO
     while (pokemon1.getHP() >= 1 && pokemon2.getHP() >= 1) {
         Move selected;
         int canUse = 0;
         if (pokemon1.getSpe() > pokemon2.getSpe()) {
+            turn++;
             // Friend attacks first
             while (!canUse) {   // Check if move can be used
                 selected = pokemon1.getMove(rng() % pokemon1.getMovesNum());
@@ -858,6 +852,7 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
 
         }
         else {
+            turn++;
             // Foe attacks first
             while (!canUse) {
                 selected = pokemon2.getMove(rng() % pokemon2.getMovesNum());
@@ -908,6 +903,7 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner) {
         }
     }
 
+    printf("%d turns\n", turn);
     if (pokemon2.getHP() < 1) {
         winner = pokemon1;
     }

@@ -41,14 +41,6 @@ __constant__ double accMultiplierGPU[13] = {
     7.0 / 3.0, 8.0 / 3.0, 9.0 / 3.0
 };
 
-//__constant__ double evaMultiplierGPU[13] = {
-//    9.0 / 3.0, 8.0 / 3.0, 7.0 / 3.0,
-//    6.0 / 3.0, 5.0 / 3.0, 4.0 / 3.0,
-//    3.0 / 3.0,
-//    3.0 / 4.0, 3.0 / 5.0, 3.0 / 6.0,
-//    3.0 / 7.0, 3.0 / 8.0, 3.0 / 9.0
-//};
-
 __device__ static void typeMultiplierGPU(int damage, Move move, TYPES defenderType1, TYPES defenderType2, int* outArray) {
     double modifier = 1.0;
     int superEff = 0;
