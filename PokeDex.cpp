@@ -102,10 +102,10 @@ void PokeDex::dexpopulate() {
 
     //Snorlax
 	pokedex[143] = Pokemon("Snorlax", 267, 178, 128, 128, 178, 90, TYPES::NORMAL, TYPES::NONE);
-    pokedex[18].setMove1(attackDex.attackdex["Body Slam"]);
-    pokedex[18].setMove2(attackDex.attackdex["Giga Impact"]);
-    pokedex[18].setMove3(attackDex.attackdex["Hammer Arm"]);
-    pokedex[18].setMove4(attackDex.attackdex["Amnesia"]);
+    pokedex[143].setMove1(attackDex.attackdex["Body Slam"]);
+    pokedex[143].setMove2(attackDex.attackdex["Giga Impact"]);
+    pokedex[143].setMove3(attackDex.attackdex["Hammer Arm"]);
+    pokedex[143].setMove4(attackDex.attackdex["Amnesia"]);
 
     //Dragonite
 	pokedex[149] = Pokemon("Dragonite", 198, 204, 161, 167, 167, 145, TYPES::DRAGON, TYPES::FLYING);

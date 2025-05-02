@@ -20,6 +20,7 @@
 
 const int ITERS = 1;
 const int ITERSGPU = 1;
+const int numNatures = 25;
 
 // Prints out the Pokemon and its stats
 void displayPoke(int* P) {
@@ -67,13 +68,13 @@ int main() {
 
 	// Printing for Output file
 	//std::ofstream outFile("C:/Users/mag6814/Source/Repos/kin8564/Cudamon/results.txt", std::ios::app);
-	std::fstream outFile("E:/Cudamon/results.txt", std::ios::app);
-	if (!outFile) {
-		std::cerr << "Error opening file for writing!" << std::endl;
-		return 1;
-	}
+	////std::fstream outFile("E:/Cudamon/results.txt", std::ios::app);
+	//if (!outFile) {
+	//	std::cerr << "Error opening file for writing!" << std::endl;
+	//	return 1;
+	//}
 
-	outFile << std::scientific;
+	//outFile << std::scientific;
 
 	clock_t start, end;
 	float tcpu, tgpu;
@@ -82,12 +83,22 @@ int main() {
 	PokeDex pokedex;
 	pokedex.dexpopulate();
 
+	Pokemon Charmander = pokedex.pokedex[4];
+	Pokemon Squirtle = pokedex.pokedex[7];
 	Pokemon Venusaur = pokedex.pokedex[3];
 	Pokemon Charizard = pokedex.pokedex[6];
 	Pokemon Blastoise = pokedex.pokedex[9];
-
-	Pokemon Charmander = pokedex.pokedex[4];
-	Pokemon Squirtle = pokedex.pokedex[7];
+	Pokemon Pidgeot = pokedex.pokedex[18];
+	Pokemon Raichu = pokedex.pokedex[26];
+	Pokemon Alakazam = pokedex.pokedex[65];
+	Pokemon Machamp = pokedex.pokedex[68];
+	Pokemon Golem = pokedex.pokedex[76];
+	Pokemon Gengar = pokedex.pokedex[94];
+	Pokemon Pinsir = pokedex.pokedex[127];
+	Pokemon Snorlax = pokedex.pokedex[143];
+	Pokemon Dragonite = pokedex.pokedex[149];
+	Pokemon Mewtwo = pokedex.pokedex[150];
+	Pokemon Mew = pokedex.pokedex[151];
 
 	// CPU
 	Pokemon* team1 = new Pokemon[MAX_POKEMON];
@@ -95,8 +106,8 @@ int main() {
 	Pokemon* winner = new Pokemon[MAX_POKEMON];
 
 	for (int i = 0; i < MAX_POKEMON; i++) {
-		team1[i] = Charizard;
-		team2[i] = Blastoise;
+		team1[i] = Raichu;
+		team2[i] = Pinsir;
 	}
 
 	// Initialize trainer teams
@@ -109,71 +120,71 @@ int main() {
 	// Initialization
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		// Player 1 (Charmander)
-		natureSet(i, Charizard);
-		h_p1->nature[i] = Charizard.weirdo;
-		h_p1->healthPoints[i] = Charizard.healthPoints;
-		h_p1->attack[i] = Charizard.attack;
-		h_p1->defense[i] = Charizard.defense;
-		h_p1->specialAttack[i] = Charizard.specialAttack;
-		h_p1->specialDefense[i] = Charizard.specialDefense;
-		h_p1->speed[i] = Charizard.speed;
-		h_p1->accuracy[i] = Charizard.pokeacc;
-		h_p1->evasion[i] = Charizard.evasion;
-		h_p1->type1[i] = Charizard.type1;
-		h_p1->type2[i] = Charizard.type2;
+		natureSet(i, Raichu);
+		h_p1->nature[i] = Raichu.weirdo;
+		h_p1->healthPoints[i] = Raichu.healthPoints;
+		h_p1->attack[i] = Raichu.attack;
+		h_p1->defense[i] = Raichu.defense;
+		h_p1->specialAttack[i] = Raichu.specialAttack;
+		h_p1->specialDefense[i] = Raichu.specialDefense;
+		h_p1->speed[i] = Raichu.speed;
+		h_p1->accuracy[i] = Raichu.pokeacc;
+		h_p1->evasion[i] = Raichu.evasion;
+		h_p1->type1[i] = Raichu.type1;
+		h_p1->type2[i] = Raichu.type2;
 
 		for (int j = 0; j < 4; j++) {
-			h_p1->moves[i][j] = Charizard.moves[j];
+			h_p1->moves[i][j] = Raichu.moves[j];
 		}
 
-		h_p1->statAtk[i][0] = Charizard.statAtk[0];
-		h_p1->statAtk[i][1] = Charizard.statAtk[1];
-		h_p1->statDef[i][0] = Charizard.statDef[0];
-		h_p1->statDef[i][1] = Charizard.statDef[1];
-		h_p1->statSpa[i][0] = Charizard.statSpa[0];
-		h_p1->statSpa[i][1] = Charizard.statSpa[1];
-		h_p1->statSpd[i][0] = Charizard.statSpd[0];
-		h_p1->statSpd[i][1] = Charizard.statSpd[1];
-		h_p1->statSpe[i][0] = Charizard.statSpe[0];
-		h_p1->statSpe[i][1] = Charizard.statSpe[1];
+		h_p1->statAtk[i][0] = Raichu.statAtk[0];
+		h_p1->statAtk[i][1] = Raichu.statAtk[1];
+		h_p1->statDef[i][0] = Raichu.statDef[0];
+		h_p1->statDef[i][1] = Raichu.statDef[1];
+		h_p1->statSpa[i][0] = Raichu.statSpa[0];
+		h_p1->statSpa[i][1] = Raichu.statSpa[1];
+		h_p1->statSpd[i][0] = Raichu.statSpd[0];
+		h_p1->statSpd[i][1] = Raichu.statSpd[1];
+		h_p1->statSpe[i][0] = Raichu.statSpe[0];
+		h_p1->statSpe[i][1] = Raichu.statSpe[1];
 
-		h_p1->statAcc[i][0] = Charizard.statAcc[0];
-		h_p1->statAcc[i][1] = Charizard.statAcc[1];
-		h_p1->statEva[i][0] = Charizard.statEva[0];
-		h_p1->statEva[i][1] = Charizard.statEva[1];
+		h_p1->statAcc[i][0] = Raichu.statAcc[0];
+		h_p1->statAcc[i][1] = Raichu.statAcc[1];
+		h_p1->statEva[i][0] = Raichu.statEva[0];
+		h_p1->statEva[i][1] = Raichu.statEva[1];
 
 		// Player 2 (Squirtle)
-		h_p2->healthPoints[i] = Blastoise.healthPoints;
-		h_p2->attack[i] = Blastoise.attack;
-		h_p2->defense[i] = Blastoise.defense;
-		h_p2->specialAttack[i] = Blastoise.specialAttack;
-		h_p2->specialDefense[i] = Blastoise.specialDefense;
-		h_p2->speed[i] = Blastoise.speed;
-		h_p2->accuracy[i] = Blastoise.pokeacc;
-		h_p2->evasion[i] = Blastoise.evasion;
-		h_p2->type1[i] = Blastoise.type1;
-		h_p2->type2[i] = Blastoise.type2;
-		h_p2->nature[i] = Blastoise.weirdo;
+		h_p2->healthPoints[i] = Pinsir.healthPoints;
+		h_p2->attack[i] = Pinsir.attack;
+		h_p2->defense[i] = Pinsir.defense;
+		h_p2->specialAttack[i] = Pinsir.specialAttack;
+		h_p2->specialDefense[i] = Pinsir.specialDefense;
+		h_p2->speed[i] = Pinsir.speed;
+		h_p2->accuracy[i] = Pinsir.pokeacc;
+		h_p2->evasion[i] = Pinsir.evasion;
+		h_p2->type1[i] = Pinsir.type1;
+		h_p2->type2[i] = Pinsir.type2;
+		h_p2->nature[i] = Pinsir.weirdo;
 
 		for (int j = 0; j < 4; j++) {
-			h_p2->moves[i][j] = Blastoise.moves[j];
+			h_p2->moves[i][j] = Pinsir.moves[j];
 		}
 
-		h_p2->statAtk[i][0] = Blastoise.statAtk[0];
-		h_p2->statAtk[i][1] = Blastoise.statAtk[1];
-		h_p2->statDef[i][0] = Blastoise.statDef[0];
-		h_p2->statDef[i][1] = Blastoise.statDef[1];
-		h_p2->statSpa[i][0] = Blastoise.statSpa[0];
-		h_p2->statSpa[i][1] = Blastoise.statSpa[1];
-		h_p2->statSpd[i][0] = Blastoise.statSpd[0];
-		h_p2->statSpd[i][1] = Blastoise.statSpd[1];
-		h_p2->statSpe[i][0] = Blastoise.statSpe[0];
-		h_p2->statSpe[i][1] = Blastoise.statSpe[1];
+		h_p2->statAtk[i][0] = Pinsir.statAtk[0];
+		h_p2->statAtk[i][1] = Pinsir.statAtk[1];
+		h_p2->statDef[i][0] = Pinsir.statDef[0];
+		h_p2->statDef[i][1] = Pinsir.statDef[1];
+		h_p2->statSpa[i][0] = Pinsir.statSpa[0];
+		h_p2->statSpa[i][1] = Pinsir.statSpa[1];
+		h_p2->statSpd[i][0] = Pinsir.statSpd[0];
+		h_p2->statSpd[i][1] = Pinsir.statSpd[1];
+		h_p2->statSpe[i][0] = Pinsir.statSpe[0];
+		h_p2->statSpe[i][1] = Pinsir.statSpe[1];
 
-		h_p2->statAcc[i][0] = Blastoise.statAcc[0];
-		h_p2->statAcc[i][1] = Blastoise.statAcc[1];
-		h_p2->statEva[i][0] = Blastoise.statEva[0];
-		h_p2->statEva[i][1] = Blastoise.statEva[1];
+		h_p2->statAcc[i][0] = Pinsir.statAcc[0];
+		h_p2->statAcc[i][1] = Pinsir.statAcc[1];
+		h_p2->statEva[i][0] = Pinsir.statEva[0];
+		h_p2->statEva[i][1] = Pinsir.statEva[1];
 	}
 
 	// Run battles in series
@@ -215,9 +226,9 @@ int main() {
 		}
 	}
 	
-	int groupSize = MAX_POKEMON / 25;
+	int groupSize = MAX_POKEMON / numNatures;
 	int group = 0;
-	double natureWins[25];
+	double natureWins[numNatures];
 
 	// GPU results
 	int gpuwin = 0;
@@ -226,35 +237,26 @@ int main() {
 			gpuwin++;
 		}
 		// After the wins for each nature have been counted, evaluate the win percentage
-		if (i % groupSize == 0 && i!= 0) {
+		if ((i + 1) % groupSize == 0) {
 			natureWins[group] = (static_cast<double>(gpuwin) / groupSize) * 100;
 			group++;
 			gpuwin = 0;
 		}
 	}
-	// Calculate the win percentage for the last group
-	natureWins[group] = (static_cast<double>(gpuwin) / (groupSize)) * 100;
-
-	//natureWins[group] = (static_cast<double>(gpuwin) / groupSize) * 100;
-
-	//double win = (static_cast<double>(gpuwin) / MAX_POKEMON) * 100;
 
 	group = 0;
 	int avg = 0;
-	int natureAvg[25];
+	int natureAvg[numNatures];
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		avg += turn_results[i];
-		if (i % groupSize == 0 && i!= 0) {
+		if ((i + 1) % groupSize == 0) {
 			natureAvg[group] = avg / groupSize;
 			group++;
 			avg = 0;
 		}
 	}
-	// avg /= MAX_POKEMON;
-	// Calculate the avg turns for the last group
-	natureAvg[group] = avg / groupSize;
 
-	char natureNames[25][20] = {
+	char natureNames[numNatures][20] = {
 		"Hardy", "Lonely", "Brave", "Adamant", "Naughty",
 		"Bold", "Docile", "Relaxed", "Impish", "Lax",
 		"Timid", "Hasty", "Serious", "Jolly", "Naive",
@@ -262,16 +264,25 @@ int main() {
 		"Calm", "Gentle", "Sassy", "Careful", "Quirky"
 	};
 
+	printf("%s vs %s\n\n", team1[0].getPokeName(), team2[0].getPokeName());
 	printf("CPU time: %e\n", tcpu);
 	printf("GPU time: %e\n", tgpu);
 	printf("Speedup: %e\n", speedup);
-	printf("Win Percentage of %s:\n", Charizard.getPokeName());
-	for (int i = 0; i < 25; i++) {
+	double highestWin = 0.0;
+	char bestNature[20];
+	for (int i = 0; i < numNatures; i++) {
+		double currentWin = natureWins[i];
+		if (currentWin > highestWin) {
+			highestWin = currentWin;
+			strncpy_s(bestNature, sizeof(natureNames[i]), natureNames[i], 20);
+		}
+	}
+	printf("Best Nature: %s\n", bestNature);
+	printf("Win Percentage of %s by Nature:\n", team1[0].getPokeName());
+	for (int i = 0; i < numNatures; i++) {
 		printf("\tNature %s: %f %%\n", natureNames[i], natureWins[i]);
 		printf("\tAverage number of turns: %d\n\n", natureAvg[i]);
 	}
-
-	//printf("Average number of turns: %d", avg);
 
 	/*outFile << "Pokemon Size: " << MAX_POKEMON << "\n";
 	outFile << "CPU time: " << tcpu << " ms\n";
