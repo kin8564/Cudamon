@@ -20,7 +20,7 @@
  * pokemon2 - Input array of pokemon2 stats
  * winner - Output of winning pokemon
  */
-void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner);
+void pokeBattleCPU(Pokemon* poketeam1, Pokemon* poketeam2, Pokemon* winner, int teamsize);
 
 /**
  * SUBJECT TO CHANGE
@@ -31,6 +31,6 @@ void pokeBattleCPU(Pokemon& pokemon1, Pokemon& pokemon2, Pokemon& winner);
  */
 bool pokeBattleGPU(Pokemon* pokemon1, Pokemon* pokemon2, Pokemon* results, int NUM_POKEMON);
 
-bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBattles);
+bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBattles, int seed);
 
 #endif
