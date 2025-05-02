@@ -107,6 +107,7 @@ int main() {
 
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		team1[i] = Raichu;
+		natureSet(i, team1[i]);
 		team2[i] = Pinsir;
 	}
 
