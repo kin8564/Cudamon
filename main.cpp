@@ -8,6 +8,7 @@
 #include "Pokemon.h"
 #include "PokeDex.h"
 #include "AttackDex.h"
+#include "Natures.h"
 #include "PokemonData.h"
 #include <fstream>
 #include <random>
@@ -23,6 +24,38 @@ const int team_size = 1000;
 // Prints out the Pokemon and its stats
 void displayPoke(int* P) {
 
+}
+
+//Modulo of Idx is dependent on the team size variable, consider passing that in to function
+void natureSet(int idx, Pokemon mon) {
+	int choose = idx % 25;
+	switch (choose) {
+	case 0: mon.setNature(NATURES::HARDY);
+	case 1: mon.setNature(NATURES::LONELY);
+	case 2: mon.setNature(NATURES::BRAVE);
+	case 3: mon.setNature(NATURES::ADAMANT);
+	case 4: mon.setNature(NATURES::NAUGHTY);
+	case 5: mon.setNature(NATURES::BOLD);
+	case 6: mon.setNature(NATURES::DOCILE);
+	case 7: mon.setNature(NATURES::RELAXED);
+	case 8: mon.setNature(NATURES::IMPISH);
+	case 9: mon.setNature(NATURES::LAX);
+	case 10: mon.setNature(NATURES::TIMID);
+	case 11: mon.setNature(NATURES::HASTY);
+	case 12: mon.setNature(NATURES::SERIOUS);
+	case 13: mon.setNature(NATURES::JOLLY);
+	case 14: mon.setNature(NATURES::NAIVE);
+	case 15: mon.setNature(NATURES::MODEST);
+	case 16: mon.setNature(NATURES::MILD);
+	case 17: mon.setNature(NATURES::QUIET);
+	case 18: mon.setNature(NATURES::BASHFUL);
+	case 19: mon.setNature(NATURES::RASH);
+	case 20: mon.setNature(NATURES::CALM);
+	case 21: mon.setNature(NATURES::GENTLE);
+	case 22: mon.setNature(NATURES::SASSY);
+	case 23: mon.setNature(NATURES::CAREFUL);
+	case 24: mon.setNature(NATURES::QUIRKY);
+	}
 }
 
 // Main for parellel pokemon battles
@@ -84,6 +117,7 @@ int main() {
 		h_p1->evasion[i] = Charizard.evasion;
 		h_p1->type1[i] = Charizard.type1;
 		h_p1->type2[i] = Charizard.type2;
+		natureSet(i, Charizard);
 		h_p1->nature[i] = Charizard.weirdo;
 
 		for (int j = 0; j < 4; j++) {
@@ -186,13 +220,13 @@ int main() {
 	std::cout << "Venusaur Win CPU " << poke1 << std::endl;
 	
 	// GPU results
-	int venuwin = 0;
+	int userWin = 0;
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		if (h_results[i] == 1) {
-			venuwin++;
+			userWin++;
 		}
 	}
-	std::cout << "Charizard Win " << venuwin << std::endl;
+	std::cout << "Charizard Win " << userWin << std::endl;
 
 	//for (int i = 0; i < team_size; ++i) {
 	//	std::cout << "Battle " << i + 1 << " result: Winner = Pokémon " << h_results[i] << std::endl;
