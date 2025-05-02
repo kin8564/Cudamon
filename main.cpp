@@ -26,36 +26,36 @@ void displayPoke(int* P) {
 
 }
 
-//Modulo of Idx is dependent on the team size variable, consider passing that in to function
 void natureSet(int idx, Pokemon mon) {
-	int choose = idx % 25;
-	switch (choose) {
-	case 0: mon.setNature(NATURES::HARDY);
-	case 1: mon.setNature(NATURES::LONELY);
-	case 2: mon.setNature(NATURES::BRAVE);
-	case 3: mon.setNature(NATURES::ADAMANT);
-	case 4: mon.setNature(NATURES::NAUGHTY);
-	case 5: mon.setNature(NATURES::BOLD);
-	case 6: mon.setNature(NATURES::DOCILE);
-	case 7: mon.setNature(NATURES::RELAXED);
-	case 8: mon.setNature(NATURES::IMPISH);
-	case 9: mon.setNature(NATURES::LAX);
-	case 10: mon.setNature(NATURES::TIMID);
-	case 11: mon.setNature(NATURES::HASTY);
-	case 12: mon.setNature(NATURES::SERIOUS);
-	case 13: mon.setNature(NATURES::JOLLY);
-	case 14: mon.setNature(NATURES::NAIVE);
-	case 15: mon.setNature(NATURES::MODEST);
-	case 16: mon.setNature(NATURES::MILD);
-	case 17: mon.setNature(NATURES::QUIET);
-	case 18: mon.setNature(NATURES::BASHFUL);
-	case 19: mon.setNature(NATURES::RASH);
-	case 20: mon.setNature(NATURES::CALM);
-	case 21: mon.setNature(NATURES::GENTLE);
-	case 22: mon.setNature(NATURES::SASSY);
-	case 23: mon.setNature(NATURES::CAREFUL);
-	case 24: mon.setNature(NATURES::QUIRKY);
-	}
+    int groupSize = MAX_POKEMON / 25;
+    int group = idx / groupSize;
+    switch (group) {
+    case 0: mon.setNature(NATURES::HARDY);
+    case 1: mon.setNature(NATURES::LONELY);
+    case 2: mon.setNature(NATURES::BRAVE);
+    case 3: mon.setNature(NATURES::ADAMANT);
+    case 4: mon.setNature(NATURES::NAUGHTY);
+    case 5: mon.setNature(NATURES::BOLD);
+    case 6: mon.setNature(NATURES::DOCILE);
+    case 7: mon.setNature(NATURES::RELAXED);
+    case 8: mon.setNature(NATURES::IMPISH);
+    case 9: mon.setNature(NATURES::LAX);
+    case 10: mon.setNature(NATURES::TIMID);
+    case 11: mon.setNature(NATURES::HASTY);
+    case 12: mon.setNature(NATURES::SERIOUS);
+    case 13: mon.setNature(NATURES::JOLLY);
+    case 14: mon.setNature(NATURES::NAIVE);
+    case 15: mon.setNature(NATURES::MODEST);
+    case 16: mon.setNature(NATURES::MILD);
+    case 17: mon.setNature(NATURES::QUIET);
+    case 18: mon.setNature(NATURES::BASHFUL);
+    case 19: mon.setNature(NATURES::RASH);
+    case 20: mon.setNature(NATURES::CALM);
+    case 21: mon.setNature(NATURES::GENTLE);
+    case 22: mon.setNature(NATURES::SASSY);
+    case 23: mon.setNature(NATURES::CAREFUL);
+    case 24: mon.setNature(NATURES::QUIRKY);
+    }
 }
 
 // Main for parellel pokemon battles
@@ -66,7 +66,8 @@ int main() {
 	//std::cout.rdbuf(nullStream.rdbuf());
 
 	// Printing for Output file
-	std::ofstream outFile("C:/Users/mag6814/Source/Repos/kin8564/Cudamon/results.txt", std::ios::app);
+	//std::ofstream outFile("C:/Users/mag6814/Source/Repos/kin8564/Cudamon/results.txt", std::ios::app);
+	std::fstream outFile("E:/Cudamon/results.txt", std::ios::app);
 	if (!outFile) {
 		std::cerr << "Error opening file for writing!" << std::endl;
 		return 1;
@@ -108,6 +109,8 @@ int main() {
 	// Initialization
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		// Player 1 (Charmander)
+		natureSet(i, Charizard);
+		h_p1->nature[i] = Charizard.weirdo;
 		h_p1->healthPoints[i] = Charizard.healthPoints;
 		h_p1->attack[i] = Charizard.attack;
 		h_p1->defense[i] = Charizard.defense;
@@ -118,8 +121,6 @@ int main() {
 		h_p1->evasion[i] = Charizard.evasion;
 		h_p1->type1[i] = Charizard.type1;
 		h_p1->type2[i] = Charizard.type2;
-		natureSet(i, Charizard);
-		h_p1->nature[i] = Charizard.weirdo;
 
 		for (int j = 0; j < 4; j++) {
 			h_p1->moves[i][j] = Charizard.moves[j];
@@ -214,27 +215,63 @@ int main() {
 		}
 	}
 	
+	int groupSize = MAX_POKEMON / 25;
+	int group = 0;
+	double natureWins[25];
+
 	// GPU results
 	int gpuwin = 0;
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		if (h_results[i] == 1) {
 			gpuwin++;
 		}
+		// After the wins for each nature have been counted, evaluate the win percentage
+		if (i % groupSize == 0 && i!= 0) {
+			natureWins[group] = (static_cast<double>(gpuwin) / groupSize) * 100;
+			group++;
+			gpuwin = 0;
+		}
 	}
+	// Calculate the win percentage for the last group
+	natureWins[group] = (static_cast<double>(gpuwin) / (groupSize)) * 100;
 
-	double win = (static_cast<double>(gpuwin) / MAX_POKEMON) * 100;
+	//natureWins[group] = (static_cast<double>(gpuwin) / groupSize) * 100;
 
+	//double win = (static_cast<double>(gpuwin) / MAX_POKEMON) * 100;
+
+	group = 0;
 	int avg = 0;
+	int natureAvg[25];
 	for (int i = 0; i < MAX_POKEMON; i++) {
 		avg += turn_results[i];
+		if (i % groupSize == 0 && i!= 0) {
+			natureAvg[group] = avg / groupSize;
+			group++;
+			avg = 0;
+		}
 	}
-	avg /= MAX_POKEMON;
+	// avg /= MAX_POKEMON;
+	// Calculate the avg turns for the last group
+	natureAvg[group] = avg / groupSize;
+
+	char natureNames[25][20] = {
+		"Hardy", "Lonely", "Brave", "Adamant", "Naughty",
+		"Bold", "Docile", "Relaxed", "Impish", "Lax",
+		"Timid", "Hasty", "Serious", "Jolly", "Naive",
+		"Modest", "Mild", "Quiet", "Bashful", "Rash",
+		"Calm", "Gentle", "Sassy", "Careful", "Quirky"
+	};
 
 	printf("CPU time: %e\n", tcpu);
 	printf("GPU time: %e\n", tgpu);
 	printf("Speedup: %e\n", speedup);
-	printf("Win Percentage of %s: %f\n", Charizard.getPokeName(), win);
-	printf("Average number of turns: %d", avg);
+	printf("Win Percentage of %s:\n", Charizard.getPokeName());
+	for (int i = 0; i < 25; i++) {
+		printf("\tNature %s: %f %%\n", natureNames[i], natureWins[i]);
+		printf("\tAverage number of turns: %d\n\n", natureAvg[i]);
+	}
+
+	//printf("Average number of turns: %d", avg);
 
 	/*outFile << "Pokemon Size: " << MAX_POKEMON << "\n";
 	outFile << "CPU time: " << tcpu << " ms\n";
