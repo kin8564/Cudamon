@@ -4,7 +4,7 @@
 #include "Types.h"
 #include "Natures.h"
 
-#define MAX_POKEMON 1000
+#define MAX_POKEMON 50000
 #define MAX_MOVES 4
 
 struct PokemonData {

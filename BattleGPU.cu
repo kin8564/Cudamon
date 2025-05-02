@@ -1039,16 +1039,16 @@ __device__ void battleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int 
     }
 }
 
-__global__ void battleKernel(PokemonData* p1, PokemonData* p2, int* result, int numBattles) {
+__global__ void battleKernel(PokemonData* p1, PokemonData* p2, int* result, int numBattles, int seed) {
     int idx = threadIdx.x + blockIdx.x * blockDim.x;
     if (idx < numBattles) {
         curandState rng;
-        curand_init(12345, idx, 0, &rng);
+        curand_init(seed, idx, 0, &rng);
         battleGPUNew(p1, p2, result, idx, &rng);  // Pass pointers
     }
 }
 
-bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBattles) {
+bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBattles,int seed) {
     PokemonData* d_p1;
     PokemonData* d_p2;
     int* d_result;
@@ -1065,12 +1065,16 @@ bool pokeBattleGPUNew(PokemonData* p1, PokemonData* p2, int* result, int numBatt
     dim3 gridSize((numBattles + TILE_SIZE - 1) / TILE_SIZE);
 
     // Launch the kernel
-    battleKernel << <gridSize, blockSize >> > (d_p1, d_p2, d_result, numBattles);
+    battleKernel << <gridSize, blockSize >> > (d_p1, d_p2, d_result, numBattles, seed);
+    cudaDeviceSynchronize();
 
     // Check for errors
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) {
         std::cerr << "CUDA Launch Error: " << cudaGetErrorString(err) << std::endl;
+        cudaFree(d_p1);
+        cudaFree(d_p2);
+        cudaFree(d_result);
         return false;
     }
 
