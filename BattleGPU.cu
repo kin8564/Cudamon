@@ -529,15 +529,6 @@ __device__ static void typeMultiplierGPU(int damage, Move move, TYPES defenderTy
     outArray[3] = noEff;  // Update as necessary for no effect cases
 }
 
-// GPU-compatible random number generation
-__device__ void initRandom(curandState* state, int seed, int idx) {
-    curand_init(seed, idx, 0, state);
-}
-
-__device__ int getRandom(curandState* state) {
-    return curand(state) % 100;
-}
-
 __device__ static int targetHitGPU(int attackerAccST, int defenderEvaST, Move move, curandState* rng) {
     int accMove = move.accuracy;
 
